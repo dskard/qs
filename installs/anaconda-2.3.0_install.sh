@@ -77,6 +77,8 @@ ${installprefix}/bin/conda install --yes -c http://conda.anaconda.org/r r-essent
 ${installprefix}/bin/pip install GPy
 ${installprefix}/bin/pip install common
 ${installprefix}/bin/pip install pyttk
-${installprefix}/bin/pip install pyttk
 ${installprefix}/bin/pip install pyqrcode
+
+# for ideas on how to install non-conda packages using conda install,
+# check out www.peterbronez.com/Using%20PyPi%20Packages%20with%20Conda
 
