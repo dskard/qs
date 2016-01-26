@@ -34,6 +34,7 @@ aptitude install \
     gfortran \
     gimp \
     git \
+    gitk \
     grep \
     gzip \
     hostname \
@@ -57,6 +58,7 @@ aptitude install \
     mkisofs \
     mount \
     mpv \
+    network-manager-openvpn \
     nmap \
     ntp \
     octave \
