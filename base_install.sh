@@ -3,13 +3,10 @@
 aptitude update
 aptitude upgrade
 
+# general utilities
 aptitude install \
     aspell \
-    autoconf \
-    autotools-dev \
-    bash \
     binutils \
-    bison \
     bsdmainutils \
     bzip2 \
     chkrootkit \
@@ -24,14 +21,9 @@ aptitude install \
     file \
     findutils \
     flashplugin-installer \
-    flex \
     ftp \
-    g++ \
-    gcc \
-    gdb \
     geany \
     geeqie \
-    gfortran \
     gimp \
     git \
     gitk \
@@ -47,10 +39,7 @@ aptitude install \
     ispell \
     kcachegrind \
     kruler \
-    latex-beamer \
     less \
-    libav-tools \
-    libpcre3-dev \
     libreoffice \
     libreoffice-presenter-console \
     manpages \
@@ -61,23 +50,9 @@ aptitude install \
     network-manager-openvpn \
     nmap \
     ntp \
-    octave \
     okular \
     patch \
     patchutils \
-    perl \
-    perl-doc \
-    perl-modules \
-    pidgin \
-    python \
-    python-imaging \
-    python-matplotlib \
-    python-pandas \
-    python-pexpect \
-    python-pycurl \
-    python-tk \
-    python-scientific \
-    python-scipy \
     readline-common \
     rkhunter \
     rsync \
@@ -88,25 +63,48 @@ aptitude install \
     subversion \
     sudo \
     tar \
-    tcl \
-    tcl-doc \
-    texlive \
     time \
-    tk \
-    tkcvs \
+    tkdiff \
     traceroute \
     unetbootin \
     unrar-free \
     unzip \
     valgrind \
     vim \
-    vim-latexsuite \
     wget \
     xvnc4viewer \
     zip \
 
+# programming languages, compilers, interpreters
+# Python and R are provided by Anaconda
 aptitude install \
+    autoconf \
+    autotools-dev \
+    bash \
+    bison \
+    flex \
+    g++ \
+    gcc \
+    gdb \
+    gfortran \
+    libav-tools \
+    libpcre3-dev \
+    octave \
+    perl \
+    perl-doc \
+    perl-modules \
+    pidgin \
+    python \
+    tcl \
+    tcl-doc \
+    tcl-tclreadline \
+    tk \
+
+# latex packages
+aptitude install \
+    latex-beamer \
     preview-latex-style \
+    texlive \
     texlive-bibtex-extra \
     texlive-font-utils \
     texlive-fonts-extra \
@@ -125,14 +123,18 @@ aptitude install \
     texlive-science \
     texlive-science-doc \
     texpower \
-    texpower-manual
+    texpower-manual \
+    vim-latexsuite \
 
+
+# virtualbox packages
 aptitude install \
     virtualbox \
     virtualbox-dkms \
     virtualbox-guest-dkms \
     virtualbox-guest-x11 \
     virtualbox-qt
+
 
 # packages for building rappture
 aptitude install \
@@ -158,10 +160,12 @@ aptitude install \
     libxrandr-dev \
     libxt-dev
 
+
 # docker stuff
 aptitude install \
     docker.io \
     vim-syntax-docker \
+
 
 # skype
 sudo dpkg --add-architecture i386
