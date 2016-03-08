@@ -172,3 +172,38 @@ sudo dpkg --add-architecture i386
 sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
 sudo apt-get update
 sudo apt-get install skype
+
+
+# gdal mapping stuff
+aptitude install \
+    gdal-bin \
+    libgdal-dev \
+    libproj-dev \
+
+
+# extra libraries for compiling R
+# deb pkg               ->  R pkg
+# mesa-common-dev       ->  rgl
+# libglu1-mesa-dev      ->  rgl
+# netcdf-bin            ->  ncdf4
+# libcairo2-dev         ->  Cairo
+# jags                  ->  rjags
+# 
+# missing packages:
+# pbkrtest -> car
+# graph, Rgraphviz -> MCMCpack
+# MCMCpack -> miscF
+# rjags -> R2jags
+# car -> systemfit, plm
+# rgdal -> gdalUtils
+# miscF, R2jags -> agRee
+# maps -> ggmap
+# rgl -> mixOmics
+# 
+aptitude install \
+    apt-file \
+    libreadline-dev \
+    libxt-dev \
+    mesa-common-dev \
+    libglu1-mesa-dev \
+    netcdf-bin \
