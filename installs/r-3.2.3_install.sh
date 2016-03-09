@@ -134,6 +134,7 @@ cran_packages="\
     'AUC', \
     'pander', \
     'orginal', \
+    'dplyr', \
     'maps', \
     'ggmap'\
 "
