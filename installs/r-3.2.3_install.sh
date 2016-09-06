@@ -10,6 +10,7 @@ pkgname=R
 VERSION=3.2.3
 basedir=/opt
 environdir=${basedir}/environ.d
+profiledir=/etc/profile.d
 pkginstalldir=${basedir}/${pkgname}
 tarinstalldir=${pkginstalldir}/tars
 installprefix=${pkginstalldir}/${VERSION}
@@ -42,25 +43,11 @@ if [[ ! -d ${environdir} ]] ; then
     mkdir -p ${environdir}
 fi
 
-cat <<- _END_ > ${environdir}/${pkgname}-${VERSION}
-conflict R_CHOICE
 
-desc "R is a system for statistical computation and graphics. It consists of a language plus a run-time environment with graphics, a debugger, access to certain system functions, and the ability to run programs stored in script files."
-
-help "https://cran.r-project.org"
-
-version=${VERSION}
-location=${pkginstalldir}/\${version}
-
-setenv R_HOME \${location}/lib/R
-
-setenv R_LIBS \$R_HOME/library
-prepend PATH \${location}/bin
-
-prepend MANPATH \${location}/man
-
-tags MATHSCI
+cat <<- _END_ > ${profiledir}/${pkgname}.sh
+export PATH=${installprefix}/bin:\$PATH
 _END_
+
 
 # install R packages
 
@@ -126,6 +113,7 @@ cran_packages="\
     'rgeos', \
     'classInt', \
     'shiny', \
+    'shinydashboard' \
     'colorspace', \
     'Cairo', \
     'maxlike', \
@@ -135,9 +123,22 @@ cran_packages="\
     'pander', \
     'orginal', \
     'dplyr', \
+    'rmarkdown', \
+    'optparse', \
     'maps', \
-    'ggmap'\
+    'ggmap', \
+    'hexbin', \
+    'RColorBrewer', \
+    'ordinal', \
+    'pheatmap', \
+    'proto', \
+    'ucminf', \
+    'sqldf', \
+    'methods', \
+    'DT' \
 "
+
+# methods package is not available in 3.2.3
 
 # might need to install libpng12-dev for ggmap package
 
@@ -159,7 +160,13 @@ ${installprefix}/bin/R -e "install.packages(c(${cran_packages}), repos=c(${cran_
 # install bioconductor and packages
 # bioclite_packages list is a single-quoted, comma separated list
 bioclite_packages="\
-    'OmicCircos' \
+    'OmicCircos', \
+    'GEOquery', \
+    'affy', \
+    'limma', \
+    'mouse4302cdf', \
+    'mouse4302.db' \
+
 "
 
 # install bioconductor and packages

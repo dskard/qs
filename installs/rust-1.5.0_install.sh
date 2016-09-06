@@ -13,6 +13,7 @@ pkgname=rust
 VERSION=1.5.0
 basedir=/opt
 environdir=${basedir}/environ.d
+profiledir=/etc/profile.d
 pkginstalldir=${basedir}/${pkgname}
 tarinstalldir=${pkginstalldir}/tars
 installprefix=${pkginstalldir}/${VERSION}
@@ -39,18 +40,7 @@ if [[ ! -d ${environdir} ]] ; then
     mkdir -p ${environdir}
 fi
 
-cat <<- _END_ > ${environdir}/${pkgname}-${VERSION}
-conflict RUST_CHOICE
-
-desc "Rust programming language."
-
-help "https://www.rust-lang.org"
-
-version=${VERSION}
-location=${pkginstalldir}/\${version}
-
-prepend PATH \${location}/bin
-
-tags MATHSCI
+cat <<- _END_ > ${profiledir}/${pkgname}.sh
+export PATH=${installprefix}/bin:\$PATH
 _END_
 

@@ -13,6 +13,7 @@ pkgname=anaconda
 VERSION=2.3.0
 basedir=/opt
 environdir=${basedir}/environ.d
+profiledir=/etc/profile.d
 pkginstalldir=${basedir}/${pkgname}
 tarinstalldir=${pkginstalldir}/tars
 installprefix=${pkginstalldir}/${VERSION}
@@ -38,22 +39,9 @@ if [[ ! -d ${environdir} ]] ; then
     mkdir -p ${environdir}
 fi
 
-cat <<- _END_ > ${environdir}/${pkgname}-${VERSION}
-conflict ANACONDA_CHOICE
 
-desc "Python distribution for large-scale data processing, predictive analytics, and scientific computing."
-
-help "https://store.continuum.io/cshop/anaconda"
-
-version=${VERSION}
-location=${pkginstalldir}/\${version}
-
-prepend PATH \${location}/bin
-
-# To pick up submit
-setenv  PYTHONPATH /usr/local/lib/python2.7/dist-packages
-
-tags MATHSCI
+cat <<- _END_ > ${profiledir}/${pkgname}.sh
+export PATH=${installprefix}/bin:\$PATH
 _END_
 
 
