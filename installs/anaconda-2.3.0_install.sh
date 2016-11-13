@@ -66,6 +66,7 @@ ${installprefix}/bin/pip install GPy
 ${installprefix}/bin/pip install common
 ${installprefix}/bin/pip install pyttk
 ${installprefix}/bin/pip install pyqrcode
+${installprefix}/bin/pip install folium
 
 # for ideas on how to install non-conda packages using conda install,
 # check out www.peterbronez.com/Using%20PyPi%20Packages%20with%20Conda

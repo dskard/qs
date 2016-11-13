@@ -1,5 +1,9 @@
 #! /bin/bash
 
+# this needs the following ubuntu packages installed:
+# openjdk-7-jdk for jni.h
+# libpango1.0-dev for png/cairo stuff
+
 # show commands being run
 set -x
 
@@ -113,7 +117,7 @@ cran_packages="\
     'rgeos', \
     'classInt', \
     'shiny', \
-    'shinydashboard' \
+    'shinydashboard', \
     'colorspace', \
     'Cairo', \
     'maxlike', \
