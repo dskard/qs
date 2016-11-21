@@ -207,3 +207,7 @@ aptitude install \
     mesa-common-dev \
     libglu1-mesa-dev \
     netcdf-bin \
+
+
+# arduino compilers
+aptitude install avrdude gcc-avr gdb-avr simulavr avr-libc
