@@ -43,4 +43,23 @@ if [ `expr ${h} % 2` -eq 1 ]; then
     echo "setting height: $h"
 fi
 
-avconv -f alsa -i pulse -f x11grab -r 25 -s ${w}x${h} -i :0.0+${x},${y} -vcodec libx264 -pre:0 ultrafast -threads 4 ${1}.mkv
+# could probably use ffmpeg here just the same
+# https://trac.ffmpeg.org/wiki/Capture/Desktop
+# more on encoding
+# https://trac.ffmpeg.org/wiki/Encode/H.264
+# https://trac.ffmpeg.org/wiki/Encode/MPEG-4
+
+avconv \
+    -f alsa \
+    -i pulse \
+    -f x11grab \
+    -r 25 \
+    -s ${w}x${h} \
+    -i :0.0+${x},${y} \
+    -vcodec libx264 \
+    -preset ultrafast \
+    -crf 0 \
+    -threads 4 \
+    ${1}.mkv
+
+
