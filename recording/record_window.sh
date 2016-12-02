@@ -31,8 +31,6 @@ fi
 
 echo recording "$w"x"$h" $x,$y
 
-# avconv -f alsa -i pulse -f x11grab -r 25 -s 1440x900 -i :0.0+0,0 -vcodec libx264 -pre:0 ultrafast -threads 4 $1.mkv
-
 if [ `expr ${w} % 2` -eq 1 ]; then
     w=`expr $w + 1`;
     echo "setting width: $w"
