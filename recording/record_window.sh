@@ -1,5 +1,12 @@
 #! /bin/sh
 
+# pick and record a window
+#
+# USAGE:
+# record_window.sh myfilename
+#
+# recording will start after you choose a window.
+
 # getting window borders
 # http://unix.stackexchange.com/a/156349
 entire=false
