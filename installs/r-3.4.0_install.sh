@@ -20,6 +20,7 @@ pkgname=R
 VERSION=3.4.0
 basedir=/opt
 environdir=${basedir}/environ.d
+profiledir=/etc/profile.d
 pkginstalldir=${basedir}/${pkgname}
 tarinstalldir=${pkginstalldir}/tars
 installprefix=${pkginstalldir}/${VERSION}
@@ -61,7 +62,7 @@ if [[ ! -d ${environdir} ]] ; then
     mkdir -p ${environdir}
 fi
 
-cat <<- _END_ > ${profiledir}/${pkgname}.sh
+cat <<- _END_ > ${profiledir}/${pkgname}-${VERSION}.sh
 export PATH=${installprefix}/bin:\$PATH
 export LD_LIBRARY_PATH=${installprefix}/lib/R/lib:\${LD_LIBRARY_PATH}
 export MANPATH=${installprefix}/share/man:\${MANPATH}
