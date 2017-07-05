@@ -51,7 +51,7 @@ make all
 make install
 
 # setup Rprofile.site
-install -D --mode 0444 ${installdir}/Rprofile.site.in ${installprefix}/lib/R/etc/Rprofile.site
+# install -D --mode 0444 ${installdir}/Rprofile.site.in ${installprefix}/lib/R/etc/Rprofile.site
 
 # setup Rlogo-1.png
 install -D --mode 0444 ${installdir}/Rlogo-1.png ${installprefix}/Rlogo-1.png
@@ -65,7 +65,7 @@ fi
 cat <<- _END_ > ${profiledir}/${pkgname}-${VERSION}.sh
 export PATH=${installprefix}/bin:\$PATH
 export LD_LIBRARY_PATH=${installprefix}/lib/R/lib:\${LD_LIBRARY_PATH}
-export MANPATH=${installprefix}/share/man:\${MANPATH}
+# export MANPATH=${installprefix}/share/man:\${MANPATH}
 
 export R_INSTALL_DIR=${installprefix}
 export R_LOGO_PATH=${installprefix}/Rlogo-1.png
