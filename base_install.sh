@@ -1,5 +1,7 @@
 #!/bin/sh
 
+apt-get install aptitude
+
 aptitude update
 aptitude upgrade
 
@@ -139,28 +141,28 @@ aptitude install \
 
 
 # packages for building rappture
-aptitude install \
-    cmake \
-    libavcodec-dev \
-    libavformat-dev \
-    libavutil-dev \
-    libdx4-dev \
-    libexpat1-dev \
-    libfreetype6-dev \
-    libgl1-mesa-swx11-dev \
-    libjpeg8-dev \
-    libmysqlclient-dev \
-    libpng12-dev \
-    libreadline-dev \
-    libssl-dev \
-    libswscale-dev \
-    libtiff4-dev \
-    libx11-dev \
-    libxext-dev \
-    libxft-dev \
-    libxpm-dev \
-    libxrandr-dev \
-    libxt-dev
+#aptitude install \
+#    cmake \
+#    libavcodec-dev \
+#    libavformat-dev \
+#    libavutil-dev \
+#    libdx4-dev \
+#    libexpat1-dev \
+#    libfreetype6-dev \
+#    libgl1-mesa-swx11-dev \
+#    libjpeg8-dev \
+#    libmysqlclient-dev \
+#    libpng12-dev \
+#    libreadline-dev \
+#    libssl-dev \
+#    libswscale-dev \
+#    libtiff4-dev \
+#    libx11-dev \
+#    libxext-dev \
+#    libxft-dev \
+#    libxpm-dev \
+#    libxrandr-dev \
+#    libxt-dev
 
 
 # docker stuff
@@ -169,18 +171,31 @@ aptitude install \
     vim-syntax-docker \
 
 
-# skype
-sudo dpkg --add-architecture i386
-sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
-sudo apt-get update
-sudo apt-get install skype
+# skype (old)
+#sudo dpkg --add-architecture i386
+#sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
+#sudo apt-get update
+#sudo apt-get install skype
+#
+# instructions:
+# http://ubuntuhandbook.org/index.php/2017/03/install-skype-5-0-for-linux-ubuntu-16-04/
+# download skype from here:
+# https://www.skype.com/en/download-skype/skype-for-computer/
+
+apt-get install apt-transport-https -y
+curl https://repo.skype.com/data/SKYPE-GPG-KEY | apt-key add -
+echo "deb [arch=amd64] https://repo.skype.com/deb stable main" | tee /etc/apt/sources.list.d/skype-stable.list
+apt update
+apt install skypeforlinux
+
+
 
 
 # gdal mapping stuff
-aptitude install \
-    gdal-bin \
-    libgdal-dev \
-    libproj-dev \
+#aptitude install \
+#    gdal-bin \
+#    libgdal-dev \
+#    libproj-dev \
 
 
 # extra libraries for compiling R
@@ -201,7 +216,7 @@ aptitude install \
 # miscF, R2jags -> agRee
 # maps -> ggmap
 # rgl -> mixOmics
-# 
+
 aptitude install \
     apt-file \
     libreadline-dev \
@@ -212,11 +227,11 @@ aptitude install \
 
 
 # packages for rstudio server
-aptitude install \
-    libboost1.55-dev \
-    uuid-dev \
-    ant \
-    openjdk-7-jdk
+#aptitude install \
+#    libboost1.55-dev \
+#    uuid-dev \
+#    ant \
+#    openjdk-7-jdk
 
 # arduino compilers
 aptitude install avrdude gcc-avr gdb-avr simulavr avr-libc
