@@ -9,6 +9,7 @@ aptitude install \
     binutils \
     bsdmainutils \
     bzip2 \
+    ca-certificates \
     chkrootkit \
     chromium-browser \
     coreutils \
@@ -40,6 +41,7 @@ aptitude install \
     kcachegrind \
     kruler \
     less \
+    libboost1.55-dev \
     libreoffice \
     libreoffice-presenter-console \
     manpages \
@@ -209,5 +211,19 @@ aptitude install \
     netcdf-bin \
 
 
+# packages for rstudio server
+aptitude install \
+    libboost1.55-dev \
+    uuid-dev \
+    ant \
+    openjdk-7-jdk
+
 # arduino compilers
 aptitude install avrdude gcc-avr gdb-avr simulavr avr-libc
+
+
+# installing ssl serts properly?
+# https://stackoverflow.com/a/30154802
+#aptitude install ca-certificates
+#mkdir -p /etc/pki/tls/certs
+#cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt
