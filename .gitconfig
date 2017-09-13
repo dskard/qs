@@ -1,0 +1,8 @@
+[user]
+    email =
+    name = codedsk
+[diff]
+    tool = tkdiff
+[difftool]
+    prompt = false
+
