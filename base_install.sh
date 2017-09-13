@@ -1,12 +1,12 @@
 #!/bin/sh
 
-apt-get install aptitude
+apt-get -y install aptitude
 
 aptitude update
-aptitude upgrade
+aptitude -y upgrade
 
 # general utilities
-aptitude install \
+aptitude -y install \
     aspell \
     binutils \
     bsdmainutils \
@@ -53,6 +53,7 @@ aptitude install \
     mpv \
     network-manager-openvpn \
     nmap \
+    nscd \
     ntp \
     okular \
     patch \
@@ -81,7 +82,7 @@ aptitude install \
 
 # programming languages, compilers, interpreters
 # Python and R are provided by Anaconda
-aptitude install \
+aptitude -y install \
     autoconf \
     autotools-dev \
     bash \
@@ -105,7 +106,7 @@ aptitude install \
     tk \
 
 # latex packages
-aptitude install \
+aptitude -y install \
     latex-beamer \
     preview-latex-style \
     texlive \
@@ -132,7 +133,7 @@ aptitude install \
 
 
 # virtualbox packages
-aptitude install \
+aptitude -y install \
     virtualbox \
     virtualbox-dkms \
     virtualbox-guest-dkms \
@@ -166,7 +167,7 @@ aptitude install \
 
 
 # docker stuff
-aptitude install \
+aptitude -y install \
     docker.io \
     vim-syntax-docker \
 
@@ -182,11 +183,11 @@ aptitude install \
 # download skype from here:
 # https://www.skype.com/en/download-skype/skype-for-computer/
 
-apt-get install apt-transport-https -y
+aptitude -y install apt-transport-https
 curl https://repo.skype.com/data/SKYPE-GPG-KEY | apt-key add -
 echo "deb [arch=amd64] https://repo.skype.com/deb stable main" | tee /etc/apt/sources.list.d/skype-stable.list
-apt update
-apt install skypeforlinux
+aptitude update
+aptitude -y install skypeforlinux
 
 
 
@@ -217,7 +218,7 @@ apt install skypeforlinux
 # maps -> ggmap
 # rgl -> mixOmics
 
-aptitude install \
+aptitude -y install \
     apt-file \
     libreadline-dev \
     libxt-dev \
@@ -234,7 +235,7 @@ aptitude install \
 #    openjdk-7-jdk
 
 # arduino compilers
-aptitude install avrdude gcc-avr gdb-avr simulavr avr-libc
+aptitude -y install avrdude gcc-avr gdb-avr simulavr avr-libc
 
 
 # installing ssl serts properly?
