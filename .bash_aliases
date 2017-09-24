@@ -41,3 +41,5 @@ function fluff {
 function getkeycode {
     xev | sed -n 's/^.*keycode *\([0-9]\+\).*$/keycode \1 = /p'
 }
+
+export EDITOR=vim

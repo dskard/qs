@@ -226,6 +226,7 @@ aptitude -y install \
     libglu1-mesa-dev \
     netcdf-bin \
 
+apt-file update
 
 # packages for rstudio server
 #aptitude install \
@@ -243,3 +244,8 @@ aptitude -y install avrdude gcc-avr gdb-avr simulavr avr-libc
 #aptitude install ca-certificates
 #mkdir -p /etc/pki/tls/certs
 #cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt
+
+# install ufw firewall and openssh-server
+aptitude -y install \
+    ufw \
+    openssh-server
