@@ -26,7 +26,7 @@ set -x
 set -e
 
 pkgname=R
-VERSION=3.4.0
+VERSION=3.4.1
 basedir=/opt
 environdir=${basedir}/environ.d
 profiledir=/etc/profile.d
