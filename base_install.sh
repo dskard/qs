@@ -25,6 +25,7 @@ aptitude -y install \
     findutils \
     flashplugin-installer \
     ftp \
+    gdebi \
     geany \
     geeqie \
     gimp \
@@ -107,7 +108,6 @@ aptitude -y install \
 
 # latex packages
 aptitude -y install \
-    latex-beamer \
     preview-latex-style \
     texlive \
     texlive-bibtex-extra \
@@ -127,9 +127,8 @@ aptitude -y install \
     texlive-publishers-doc \
     texlive-science \
     texlive-science-doc \
-    texpower \
-    texpower-manual \
     vim-latexsuite \
+
 
 
 # virtualbox packages
@@ -167,9 +166,31 @@ aptitude -y install \
 
 
 # docker stuff
+# docker-ce is installed from docker.com repo
+#   see https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+apt-get update
+apt-cache policy docker-ce
+apt-get install -y docker-ce
+
+# setup docker to run without sudo by adding the user to the "docker" group
+# run this to add the user:
+#   sudo usermod -aG docker <username>
+
+# docker-compose is installed from the script in qs/installs
+#   see https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-16-04
+bash installs/docker-compose-1.16.1.sh
+
+
+# install syntax highlighting for docker in vim
 aptitude -y install \
-    docker.io \
     vim-syntax-docker \
+
+# zoom
+wget https://zoom.us/client/latest/zoom_amd64.deb;
+gdebi --non-interactive zoom_amd64.deb
+
 
 
 # skype (old)
