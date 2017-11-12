@@ -139,7 +139,8 @@ aptitude -y install \
 # install ufw firewall and openssh-server
 aptitude -y install \
     ufw \
-    openssh-server
+    openssh-server \
+    xauth
 
 aptitude -y install \
     apt-file \
