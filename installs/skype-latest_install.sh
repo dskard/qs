@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -x
+
 # instructions:
 # http://ubuntuhandbook.org/index.php/2017/03/install-skype-5-0-for-linux-ubuntu-16-04/
 # download skype from here:

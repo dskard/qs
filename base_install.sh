@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -x 
+
 apt-get -y install aptitude
 
 aptitude update
@@ -45,7 +47,6 @@ aptitude -y install \
     kruler \
     less \
     libreoffice \
-    libreoffice-presenter-console \
     manpages \
     mencoder \
     mkisofs \

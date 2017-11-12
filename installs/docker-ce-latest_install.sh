@@ -1,9 +1,12 @@
 #! /bin/bash
 
+set -x 
+
 # docker-ce is installed from docker.com repo
 #   see https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+# for ubuntu 17.10, you need to use test channel
+echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker-ce.list
 apt-get update
 apt-cache policy docker-ce
 apt-get install -y docker-ce
