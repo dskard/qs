@@ -1,5 +1,7 @@
 #! /bin/bash
 
+# https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-16-04
+
 # show commands being run
 set -x
 

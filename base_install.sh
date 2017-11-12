@@ -44,7 +44,6 @@ aptitude -y install \
     kcachegrind \
     kruler \
     less \
-    libboost1.55-dev \
     libreoffice \
     libreoffice-presenter-console \
     manpages \
@@ -129,8 +128,6 @@ aptitude -y install \
     texlive-science-doc \
     vim-latexsuite \
 
-
-
 # virtualbox packages
 aptitude -y install \
     virtualbox \
@@ -139,105 +136,10 @@ aptitude -y install \
     virtualbox-guest-x11 \
     virtualbox-qt
 
-
-# packages for building rappture
-#aptitude install \
-#    cmake \
-#    libavcodec-dev \
-#    libavformat-dev \
-#    libavutil-dev \
-#    libdx4-dev \
-#    libexpat1-dev \
-#    libfreetype6-dev \
-#    libgl1-mesa-swx11-dev \
-#    libjpeg8-dev \
-#    libmysqlclient-dev \
-#    libpng12-dev \
-#    libreadline-dev \
-#    libssl-dev \
-#    libswscale-dev \
-#    libtiff4-dev \
-#    libx11-dev \
-#    libxext-dev \
-#    libxft-dev \
-#    libxpm-dev \
-#    libxrandr-dev \
-#    libxt-dev
-
-
-# docker stuff
-# docker-ce is installed from docker.com repo
-#   see https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-apt-get update
-apt-cache policy docker-ce
-apt-get install -y docker-ce
-
-# setup docker to run without sudo by adding the user to the "docker" group
-# run this to add the user:
-#   sudo usermod -aG docker <username>
-
-# docker-compose is installed from the script in qs/installs
-#   see https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-16-04
-bash installs/docker-compose-1.16.1.sh
-
-
-# install syntax highlighting for docker in vim
+# install ufw firewall and openssh-server
 aptitude -y install \
-    vim-syntax-docker \
-
-# zoom
-wget https://zoom.us/client/latest/zoom_amd64.deb;
-gdebi --non-interactive zoom_amd64.deb
-
-
-
-# skype (old)
-#sudo dpkg --add-architecture i386
-#sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
-#sudo apt-get update
-#sudo apt-get install skype
-#
-# instructions:
-# http://ubuntuhandbook.org/index.php/2017/03/install-skype-5-0-for-linux-ubuntu-16-04/
-# download skype from here:
-# https://www.skype.com/en/download-skype/skype-for-computer/
-
-aptitude -y install apt-transport-https
-curl https://repo.skype.com/data/SKYPE-GPG-KEY | apt-key add -
-echo "deb [arch=amd64] https://repo.skype.com/deb stable main" | tee /etc/apt/sources.list.d/skype-stable.list
-aptitude update
-aptitude -y install skypeforlinux
-
-
-
-
-# gdal mapping stuff
-#aptitude install \
-#    gdal-bin \
-#    libgdal-dev \
-#    libproj-dev \
-
-
-# extra libraries for compiling R
-# deb pkg               ->  R pkg
-# mesa-common-dev       ->  rgl
-# libglu1-mesa-dev      ->  rgl
-# netcdf-bin            ->  ncdf4
-# libcairo2-dev         ->  Cairo
-# jags                  ->  rjags
-# 
-# missing packages:
-# pbkrtest -> car
-# graph, Rgraphviz -> MCMCpack
-# MCMCpack -> miscF
-# rjags -> R2jags
-# car -> systemfit, plm
-# rgdal -> gdalUtils
-# miscF, R2jags -> agRee
-# maps -> ggmap
-# rgl -> mixOmics
+    ufw \
+    openssh-server
 
 aptitude -y install \
     apt-file \
@@ -249,15 +151,34 @@ aptitude -y install \
 
 apt-file update
 
+# arduino compilers
+aptitude -y install avrdude gcc-avr gdb-avr simulavr avr-libc
+
+
+# packages for building rappture
+#bash installs/rappture-build-env-deps_install.sh
+
+# docker-ce
+bash installs/docker-ce-latest_install.sh
+
+# docker-compose
+bash installs/docker-compose-1.16.1_install.sh
+
+# zoom
+bash installs/zoom-latest_install.sh
+
+# skype
+bash installs/skype-latest_install.sh
+
+# vagrant
+bash installs/vagrant-2.0.1_install.sh
+
 # packages for rstudio server
 #aptitude install \
 #    libboost1.55-dev \
 #    uuid-dev \
 #    ant \
 #    openjdk-7-jdk
-
-# arduino compilers
-aptitude -y install avrdude gcc-avr gdb-avr simulavr avr-libc
 
 
 # installing ssl serts properly?
@@ -266,7 +187,3 @@ aptitude -y install avrdude gcc-avr gdb-avr simulavr avr-libc
 #mkdir -p /etc/pki/tls/certs
 #cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt
 
-# install ufw firewall and openssh-server
-aptitude -y install \
-    ufw \
-    openssh-server

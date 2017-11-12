@@ -115,9 +115,13 @@ cmake .. \
     -DRSTUDIO_TARGET=Server \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=${installprefix} \
-    -DOPENSSL_INCLUDE_DIR=${OPENSSL_HOME}/include/openssl \
-    -DOPENSSL_SSL_LIBRARY=${OPENSSL_HOME}/lib/libssl.so \
-    -DOPENSSL_CRYPTO_LIBRARY=${OPENSSL_HOME}/lib/libcrypto.so
+    -DOPENSSL_INCLUDE_DIRS=${OPENSSL_HOME}/include/openssl \
+    -DOPENSSL_LIBRARIES='-L${OPENSSL_HOME}/include/openssl -lssl -lcrypto'
+
+
+#    -DOPENSSL_INCLUDE_DIR=${OPENSSL_HOME}/include/openssl \
+#    -DOPENSSL_SSL_LIBRARY=${OPENSSL_HOME}/lib/libssl.so \
+#    -DOPENSSL_CRYPTO_LIBRARY=${OPENSSL_HOME}/lib/libcrypto.so
 
 umask 022
 make install
