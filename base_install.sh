@@ -48,6 +48,9 @@ aptitude -y install \
     less \
     libreoffice \
     manpages \
+    manpages-dev \
+    manpages-posix \
+    manpages-posix-dev \
     mencoder \
     mkisofs \
     mount \
