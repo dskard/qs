@@ -42,4 +42,12 @@ function getkeycode {
     xev | sed -n 's/^.*keycode *\([0-9]\+\).*$/keycode \1 = /p'
 }
 
+function git-update {
+  git checkout master && git pull && git checkout - && git rebase master
+}
+
 export EDITOR=vim
+
+if [ -f ~/.bash_aliases_local ]; then
+    . ~/.bash_aliases_local
+fi
