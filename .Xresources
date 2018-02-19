@@ -3,7 +3,7 @@
 !XTerm*faceSize: 10
 
 XTerm*faceName: Bitstream Vera Serif Mono
-xterm*faceSize: 10
+xterm*faceSize: 11
 xterm*vt100*geometry: 80x30
 xterm*saveLines: 16384
 xterm*loginShell: true

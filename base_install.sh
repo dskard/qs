@@ -23,6 +23,7 @@ aptitude -y install \
     diffutils \
     dos2unix \
     doxygen \
+    exuberant-ctags \
     file \
     findutils \
     flashplugin-installer \
@@ -85,7 +86,8 @@ aptitude -y install \
     zip \
 
 # programming languages, compilers, interpreters
-# Python and R are provided by Anaconda
+# Python is provided by Anaconda
+# R is installed by hand
 aptitude -y install \
     autoconf \
     autotools-dev \
@@ -111,6 +113,7 @@ aptitude -y install \
 
 # latex packages
 aptitude -y install \
+    pandoc \
     preview-latex-style \
     texlive \
     texlive-bibtex-extra \

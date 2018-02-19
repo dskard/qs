@@ -14,7 +14,7 @@ map <F6> :b#<CR>
 map <F7> :%!xxd<CR>
 map <F8> :%!xxd -r<CR>
 
-" convert to binary
+" spell check
 map <F9> <Esc>:!aspell -c --dont-backup "%"<CR>:e! "%"<CR><CR>
 
 " backspace and delete stuff
@@ -47,7 +47,7 @@ filetype plugin on
 autocmd FileType c,cpp,cc,py,tcl,tk,pl,m,sh set shiftwidth=4 tabstop=4
 
 "for tex programming:
-autocmd FileType tex set shiftwidth=2 tabstop=2
+autocmd FileType tex,js,html set shiftwidth=2 tabstop=2
 
 au FileType make setlocal noexpandtab
 
@@ -66,3 +66,39 @@ set list listchars=tab:>-,trail:-
 "colorscheme evening
 "colorscheme calm
 colorscheme desert
+
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" install supertab
+Plugin 'ervandew/supertab'
+
+" install YouCompleteMe
+" don't forget to run the compiled part,
+" see qs/installs/youcompleteme.sh
+" disable YouCompleteMet with vim command:
+" let loaded_youcompleteme = 0
+Plugin 'valloric/YouCompleteMe'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+
+" leader key is backslash \
+
+" turn off YCM
+nnoremap <leader>y :let g:ycm_auto_trigger=0<CR>
+
+" turn on YCM
+nnoremap <leader>Y :let g:ycm_auto_trigger=1<CR>
+
+" YCM off by default
+let ycm_auto_trigger=0
