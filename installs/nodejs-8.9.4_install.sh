@@ -34,6 +34,8 @@ cd ${tarfilebase}
 make
 make install
 
+${installprefix}/bin/npm install -g express-generator@4
+
 cat <<- _END_ > ${profiledir}/${pkgname}.sh
 export PATH=${installprefix}/bin:\$PATH
 _END_

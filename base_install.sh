@@ -115,6 +115,7 @@ aptitude -y install \
 aptitude -y install \
     pandoc \
     preview-latex-style \
+    tex4ht \
     texlive \
     texlive-bibtex-extra \
     texlive-font-utils \
@@ -180,6 +181,9 @@ bash installs/skype-latest_install.sh
 
 # vagrant
 bash installs/vagrant-2.0.1_install.sh
+
+# google-chrome-stable
+bash installs/googlechrome_install.sh
 
 # packages for rstudio server
 #aptitude install \

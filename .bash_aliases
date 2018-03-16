@@ -42,8 +42,16 @@ function getkeycode {
     xev | sed -n 's/^.*keycode *\([0-9]\+\).*$/keycode \1 = /p'
 }
 
-function git-update {
+function git-update-merge {
+  git checkout master && git pull && git checkout - && git merge master
+}
+
+function git-update-rebase {
   git checkout master && git pull && git checkout - && git rebase master
+}
+
+function git-update-master {
+  git checkout master && git pull upstream master && git checkout -
 }
 
 export EDITOR=vim
