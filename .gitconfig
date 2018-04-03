@@ -1,8 +1,12 @@
 [user]
     email =
-    name = codedsk
+    name = dskard
 [diff]
     tool = tkdiff
 [difftool]
     prompt = false
-
+[push]
+    default = simple
+[merge]
+    tool = vimdiff
+    conflictstyle = diff3
