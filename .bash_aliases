@@ -54,6 +54,10 @@ function git-update-master {
   git checkout master && git pull upstream master && git checkout -
 }
 
+function watch-docker-ps {
+  watch -n 1 "docker ps --format \"{{.Image}}: {{.Names}}\""
+}
+
 export EDITOR=vim
 
 if [ -f ~/.bash_aliases_local ]; then
