@@ -59,6 +59,9 @@ ${installprefix}/bin/conda install --yes mathjax
 ${installprefix}/bin/conda install --yes seaborn
 ${installprefix}/bin/conda install --yes jupyter
 
+# install zeromq and python bindings
+${installprefix}/bin/conda install -c anaconda pyzmq
+
 # also install R kernel and common R packages
 ${installprefix}/bin/conda install --yes -c http://conda.anaconda.org/r r-essentials
 
