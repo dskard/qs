@@ -95,10 +95,34 @@ filetype plugin indent on    " required
 " leader key is backslash \
 
 " turn off YCM
-nnoremap <leader>y :let g:ycm_auto_trigger=0<CR>
+nnoremap <leader>Y :let g:ycm_auto_trigger=0<CR>
 
 " turn on YCM
-nnoremap <leader>Y :let g:ycm_auto_trigger=1<CR>
+nnoremap <leader>y :let g:ycm_auto_trigger=1<CR>
 
 " YCM off by default
 let ycm_auto_trigger=0
+
+"" enables auto closing of the preview window when
+"" the user accepts the offered completion string
+"let g:ycm_autoclose_preview_window_after_completion=1
+"
+"" map Jedi's jump to definition/declaration feature to the <leader>g shortcut
+"nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+"
+"" pull from keywords in the
+"" 1. current file,
+"" 2. other buffers (closed or still open),
+"" 3. the current tags
+"set complete=.,b,u,]
+"
+"
+"set wildmode=longest,list:longest
+"
+"" shows a menu and, if available, any additional tips
+"" such as the method signature or defining file
+"set completeopt=menu,preview
+"
+"
+"let g:python3_host_prog='/opt/anaconda2/5.0.1/bin/python2'
+"let g:python_host_prog='/opt/anaconda3/5.0.1/bin/python3'
