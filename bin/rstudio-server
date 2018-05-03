@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+# https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image
+
+# docker run -p 8787:8787 rocker/ropensci
+
+# https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image
+
+set -e
+
+container_name="rstudio-server"
+image_name="rocker/ropensci"
+
+container_exists=$(( $(docker container ls -a --filter "name=${container_name}" | wc -l) == 2 ))
+
+case $1 in
+
+    start)
+
+        if (( ${container_exists} )) ; then
+            echo "starting stopped container"
+            docker start ${container_name}
+        else
+            echo "starting new container"
+            docker run \
+                -d \
+                --volume=/home/zx/playground/R:/home/rstudio \
+                --name=${container_name} \
+                --net=host \
+                --workdir=/home/rstudio \
+                -p 8787:8787 \
+                -e USERID=`id -u` \
+                -e GROUPID=`id -g` \
+                -e UMASK=022 \
+                -e ROOT=TRUE \
+                -e R_LIBS_USER=/home/rstudio \
+                ${image_name}
+        fi
+    ;;
+
+    stop)
+        if (( ${container_exists} )) ; then
+            echo "stopping container"
+            docker stop ${container_name}
+        fi
+    ;;
+
+    restart)
+        $0 stop
+        sleep 1
+        $0 start
+    ;;
+
+    remove)
+        if (( ${container_exists} )) ; then
+            docker rm ${container_name}
+        fi
+    ;;
+
+esac
+
+exit 0
