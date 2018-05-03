@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# you can also pass in firefox command line options like `-private`
+#
+# ./ff -private
+
+# create a temporary directory to hold the profile
+profiledir=$(mktemp -d /tmp/ff.XXXXXXXXX)
+
+# create the temporary profile
+firefox -CreateProfile "stock ${profiledir}"
+
+# copy my preferences to the new profile.
+#cp ~/.mozilla/firefox/*.stock-clean-1/prefs.js ${profiledir}/prefs.js
+cp ~/.mozilla/firefox/*.default/prefs.js ${profiledir}/prefs.js
+
+# launch the new browser with any additional flags from the command line
+firefox -no-remote -profile "${profiledir}" $*
+
+# remove the temporary profile
+rm -rf ${profiledir}
