@@ -55,7 +55,7 @@ function git-update-master {
 }
 
 function watch-docker-ps {
-  watch -n 1 "docker ps --format \"{{.Image}}: {{.Names}}\""
+  watch -n 1 "docker ps --format \"table {{.Image}}\t{{.Names}}\t{{.Ports}}\""
 }
 
 export EDITOR=vim
