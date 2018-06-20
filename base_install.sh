@@ -73,6 +73,7 @@ aptitude -y install \
     subversion \
     sudo \
     tar \
+    tcpflow \
     time \
     tkdiff \
     traceroute \
