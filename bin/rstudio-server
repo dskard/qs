@@ -1,19 +1,59 @@
 #!/usr/bin/env bash
 
 # https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image
-
+#
 # docker run -p 8787:8787 rocker/ropensci
-
-# https://github.com/rocker-org/rocker/wiki/Using-the-RStudio-image
+#
+# make sure the following file exist in the rstudio user's home directory
+#
+#   .bashrc
+#   .profile
+#
+# They can be copied from the root user:
+#
+#   rstudio-server shell -u root
+#   cp ~/.bashrc ~/.profile .
+#   chown rstudio:rstudio .bashrc .profile
+#
 
 set -e
 
+container_user="rstudio"
 container_name="rstudio-server"
 image_name="rocker/ropensci"
+
+# set the directory where local packages should be installed
+# may also need to change the location in .Rprofile
+local_packages_dir="/home/rstudio/packages"
+
+# set the local directory where anaconda is installed
+anaconda_path="/opt/anaconda3/5.0.1"
+
 
 container_exists=$(( $(docker container ls -a --filter "name=${container_name}" | wc -l) == 2 ))
 
 case $1 in
+
+    load)
+        chromium-browser --incognito --new-window http://localhost:8787 &
+    ;;
+
+    remove)
+        if (( ${container_exists} )) ; then
+            docker rm ${container_name}
+        fi
+    ;;
+
+    restart)
+        $0 stop
+        sleep 1
+        $0 start
+    ;;
+
+    shell)
+        # pass all arguments after the first as arguments to `docker exec`
+        docker exec -ti -u ${container_user} ${@:2} ${container_name} bash
+    ;;
 
     start)
 
@@ -25,6 +65,8 @@ case $1 in
             docker run \
                 -d \
                 --volume=/home/zx/playground/R:/home/rstudio \
+                --volume=/home/zx/projects:/home/rstudio/repos \
+                --volume=${anaconda_path}:/opt/anaconda \
                 --name=${container_name} \
                 --net=host \
                 --workdir=/home/rstudio \
@@ -33,8 +75,10 @@ case $1 in
                 -e GROUPID=`id -g` \
                 -e UMASK=022 \
                 -e ROOT=TRUE \
-                -e R_LIBS_USER=/home/rstudio \
-                ${image_name}
+                -e R_LIBS_USER=${local_packages_dir} \
+                -e ANACONDA_PATH=/opt/anaconda/bin \
+                ${image_name} \
+                bash -c 'PATH=/opt/anaconda/bin:${PATH}; /init'
         fi
     ;;
 
@@ -45,16 +89,8 @@ case $1 in
         fi
     ;;
 
-    restart)
-        $0 stop
-        sleep 1
-        $0 start
-    ;;
-
-    remove)
-        if (( ${container_exists} )) ; then
-            docker rm ${container_name}
-        fi
+    update)
+        docker pull ${image_name}
     ;;
 
 esac
