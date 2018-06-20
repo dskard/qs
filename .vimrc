@@ -126,3 +126,9 @@ let ycm_auto_trigger=0
 "
 "let g:python3_host_prog='/opt/anaconda2/5.0.1/bin/python2'
 "let g:python_host_prog='/opt/anaconda3/5.0.1/bin/python3'
+
+
+" markdown syntax highlighting
+" https://github.com/gabrielelana/vim-markdown
+Bundle 'gabrielelana/vim-markdown'
+
