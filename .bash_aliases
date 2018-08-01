@@ -51,7 +51,7 @@ function git-update-rebase {
 }
 
 function git-update-master {
-  git checkout master && git pull upstream master && git checkout -
+  git checkout master && git pull origin master && git checkout -
 }
 
 function watch-docker-ps {

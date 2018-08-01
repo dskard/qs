@@ -1,5 +1,6 @@
 set nocompatible
 syntax on
+set number
 " tab multible lines at once
 map t ma>'t'a
 map T ma<'t'a
@@ -57,6 +58,8 @@ au BufEnter *.i exe "set syntax=c"
 " make procmailrc files use sh syntax highlighting
 au BufEnter .procmailrc exe "set syntax=sh"
 
+"for Go programming:
+au BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 sts=4
 
 "set list listchars=tab:��,trail:�
 set list listchars=tab:>-,trail:-
