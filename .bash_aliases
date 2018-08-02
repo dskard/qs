@@ -29,6 +29,8 @@ function watchsyslog { sudo watch -n 5 "tail -30 /var/log/syslog"; }
 
 function watchconns { sudo watch -n 2 "netstat -ntp"; }
 
+function watchnethogs { sudo nethogs wlp3s0; }
+
 function sendkey {
     # sendkey dkearney@login.hubzero.org
     cat ~/.ssh/id_dsa.pub | ssh $1 'cat - >> ~/.ssh/authorized_keys'
