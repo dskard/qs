@@ -60,6 +60,11 @@ function watch-docker-ps {
   watch -n 1 "docker ps --format \"table {{.Image}}\t{{.Names}}\t{{.Ports}}\""
 }
 
+function restart_alsa {
+  pulseaudio -k
+  sudo alsa force-reload
+}
+
 export EDITOR=vim
 
 if [ -f ~/.bash_aliases_local ]; then
