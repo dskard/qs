@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# you can also pass in chrome command line options like `--version`
+#
+# ./ch --version
+
+# some hints on command line arguments from
+# https://stackoverflow.com/a/13436874
+# https://peter.sh/experiments/chromium-command-line-switches/
+
+# create a temporary directory to hold the profile
+profiledir=$(mktemp -d /tmp/ch.XXXXXXXXX)
+
+# launch the new browser with any additional flags from the command line
+chromium-browser \
+    --incognito \
+    --user-data-dir="${profiledir}" \
+    --no-first-run \
+    --no-default-browser-check \
+    --window-size=1200,1000 \
+    $*
+
+# remove the temporary profile
+rm -rf ${profiledir}
