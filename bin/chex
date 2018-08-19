@@ -1,0 +1,410 @@
+#!/usr/bin/env bash
+
+unset CDPATH;
+
+
+########################################################################
+#
+# echoerr ()
+#
+# echo text to standard error
+#
+########################################################################
+
+echoerr ()
+{
+    if [[ "${debug}" == "true" ]] ; then
+        dt=$(date +%Y-%m-%dT%T%z);
+        printf "%s %s %s\n" "[${dt}]" "[${FUNCNAME[1]}]" "$@" 1>&2;
+    fi
+}
+
+
+########################################################################
+#
+# shrink_spaces ()
+#
+# remove repeated spaces from string
+#
+########################################################################
+
+shrink_spaces ()
+{
+    echo "$( echo ${1} | awk '$1=$1' )";
+}
+
+
+########################################################################
+#
+# print_help ()
+#
+# print the help message
+#
+########################################################################
+
+print_help()
+{
+    cat << EOF
+usage: $( basename $0 ) [options] <cmd>
+
+Run commands inside the checkRS environment.
+
+<cmd>                           The command to run inside of the
+                                container.
+
+OPTIONS:
+
+--                              Marker to signal <cmd> follows.
+-a <args> [-a <args> ...]       Additional arguments for docker run.
+-d                              Print debugging messages to stderr.
+-h                              Print this help message.
+-i <image>                      Docker image to base container on.
+-n <network>                    Network the container should join.
+-p                              No eval, don't launch the docker
+                                container, print the "docker run"
+                                command to standard output
+-v <volume> [-v <volume> ...]   Share one or more local directories
+                                with the container as volumes.
+-w <workdir>                    Set the workdir inside of the container.
+EOF
+    exit $?
+}
+
+
+########################################################################
+#
+# apply_environment_variable_sesttings ()
+#
+# set global variables based on environment variable settings
+#
+########################################################################
+
+apply_environment_variable_sesttings ()
+{
+    # set noeval based on CHEX_NOEVAL
+    [[ -z "${CHEX_NOEVAL}" ]] && noeval="false" || noeval="true"
+}
+
+
+
+########################################################################
+#
+# set_default_shared_volume ()
+#
+# set the default shared volume if none were provided on the command line
+#
+########################################################################
+
+set_default_shared_volume()
+{
+    # if no volumes were explicity set on the command line,
+    # add the present working directory to the list as the
+    # default mount.
+    if (( ${nVolumes} == 0 )) ; then
+        volumes[$nVolumes]="$( pwd )";
+        let nVolumes++;
+        echoerr "no shared volumes specified, adding \"${volumes[0]}\"";
+    fi;
+}
+
+
+########################################################################
+#
+# volume_flags ()
+#
+# setup shared directories between the host and container
+#
+########################################################################
+
+volume_flags()
+{
+    local vflags;
+    local vb;
+    local v;
+
+    vflags="";
+
+    # build the volume flags
+    for v in "${volumes[@]}" ; do
+        echoerr "adding volume flag for \"${v}\"";
+        v=$( cd -P "${v}" && pwd );
+        vb=$( basename ${v}  );
+        echoerr "mapping volume \"${v}\" to \"${volumes_root}/${vb}\"";
+        vflags="${vflags} --volume=${v}:/opt/shared/${vb}";
+    done;
+
+    # remove extra space at the beginning of the string
+    # start at the end of the string
+    # greedily find the first character that is not a space
+    # delete these matching character and save the result as a pattern
+    # pattern should be spaces
+    # start at the beginning of the string
+    # non-greedily find exact number of spaces
+    # delete these matching characters
+    # start at the beginning of the string
+    # non-greedily find exact number of spaces
+    # delete these matching characters
+    vflags=${vflags#"${vflags%%[![:space:]]*}"}
+
+    echo -n "${vflags}";
+}
+
+
+########################################################################
+#
+# container_name_flag ()
+#
+# generate a random container name
+#
+########################################################################
+
+container_name_flag()
+{
+    local name;
+    name="checkrs-${RANDOM}";
+
+    # FIXME: add code to check if the name is currently in use
+    #        if so, pick another
+
+    echo "--name=${name} --hostname=${name}";
+}
+
+########################################################################
+#
+# network_flag ()
+#
+# if no network was specified, share the host's network stack with
+# the container. otherwise, setup the network the container should join.
+#
+########################################################################
+
+network_flag()
+{
+    local result=""
+
+    if [[ "${network}" == "" ]] ; then
+        result="--net=host";
+    else
+        result="--network=${network}"
+    fi
+
+    echo "${result}"
+}
+
+
+########################################################################
+#
+# user_flag ()
+#
+# set the uid and gid of the user inside the container
+#
+########################################################################
+
+user_flag()
+{
+    local uid;
+    local gid;
+
+    uid=$( id -u );
+    gid=$( id -g );
+
+    echo "--user=${uid}:${gid}";
+}
+
+
+########################################################################
+#
+# workdir_flag ()
+#
+# set the directory that commands inside the container should be
+# run from
+#
+########################################################################
+
+workdir_flag()
+{
+    # if workdir was not set, see if there is a shared volume set
+    # if there is at least one shared volume set, set workdir to
+    # the first shared volume by default.
+    # otherwise, set workdir to /opt/shared
+    if [[ "${workdir}" == "" ]] ; then
+
+        # workdir was not explicitly set
+
+        if (( ${nVolumes} > 0 )) ; then
+            # there are shared volumes
+            # set workdir to the first shared volume
+            vb="$( basename "$( cd -P "${volumes[0]}" && pwd )" )";
+            workdir="${volumes_root}/${vb}";
+            echoerr "found volume \"${volumes[0]}\"";
+        else
+            # there are no shared volumes
+            # set workdir to the shared volume root directory
+            workdir=${volumes_root};
+        fi;
+
+        echoerr "setting workdir to \"${workdir}\"";
+    fi;
+
+    echo "--workdir=${workdir}";
+}
+
+
+########################################################################
+#
+# docker_args_flags ()
+#
+# add additional, user specified, docker run options
+#
+########################################################################
+
+docker_args_flags()
+{
+    local dflags;
+    local d;
+
+    dflags="";
+
+    # combine the additional docker run arguments
+    for d in "${dockerargs[@]}" ; do
+        echoerr "adding user defined docker args \"${d}\"";
+        dflags="${dflags} ${d}";
+    done;
+
+    # remove extra space at the beginning of the string
+    dflags=${dflags#"${dflags%%[![:space:]]*}"}
+
+    echo -n "${dflags}";
+}
+
+
+########################################################################
+#
+# image_name ()
+#
+# set the image to use to create the container
+#
+########################################################################
+
+image_name()
+{
+    echo "${docker_image}";
+}
+
+
+# keep track of multiple shared volumes to be mounted in the container.
+let nVolumes=0;
+# keep track of multiple additional "docker run" arguments.
+let nDockerArgs=0;
+debug="false";
+docker_image="rstudio/checkrs-runner";
+network="";
+noeval="false";
+workdir=""
+volumes_root="/opt/shared"
+
+apply_environment_variable_sesttings
+
+options=":a:dhi:n:pv:w:";
+
+# parse the command line flags and options
+# separate flags from options
+
+let nNamedArgs=0;
+let nUnnamedArgs=0;
+endargs=false;
+while (( "$#" ))
+do
+    if [[ "${endargs}" == "false" ]] ; then
+        case $1 in
+            -- )
+                endargs="true";
+                shift;
+                ;;
+            -h | -d | -p )
+                namedArgs[$nNamedArgs]=$1;
+                let nNamedArgs++;
+                shift;
+                ;;
+            -a | -i | -n |-v | -w )
+                namedArgs[$nNamedArgs]=$1;
+                let nNamedArgs++;
+                shift;
+                namedArgs[$nNamedArgs]=$1;
+                let nNamedArgs++;
+                shift;
+                ;;
+            * )
+                endargs="true";
+                unnamedArgs[$nUnnamedArgs]=$1;
+                let nUnnamedArgs++;
+                shift;
+                ;;
+        esac
+    else
+        # we previously found a "--"
+        # or other unrecognized option.
+        # all other arguments are part of the command
+        unnamedArgs[$nUnnamedArgs]=$1;
+        let nUnnamedArgs++;
+        shift;
+    fi
+done
+
+while getopts "${options}" Option "${namedArgs[@]}"
+do
+   case $Option in
+      a ) dockerargs[$nDockerArgs]=$OPTARG;let nDockerArgs++;;
+      d ) debug="true";;
+      h ) print_help;;
+      i ) docker_image=$OPTARG;;
+      n ) network=$OPTARG;;
+      p ) noeval="true";;
+      v ) volumes[$nVolumes]=$OPTARG;let nVolumes++;;
+      w ) workdir=$OPTARG;;
+   esac
+done
+
+set_default_shared_volume
+
+# collect all of the pieces of our command
+# keep them separate so we can easily return
+# the parts for testing.
+
+cmd_path="docker"
+cmd_subcmd="run"
+
+cmd_options="-it --rm"
+cmd_options="${cmd_options} $(volume_flags)"
+cmd_options="${cmd_options} $(container_name_flag)"
+cmd_options="${cmd_options} $(network_flag)"
+cmd_options="${cmd_options} $(user_flag)"
+cmd_options="${cmd_options} $(workdir_flag)"
+cmd_options="${cmd_options} $(docker_args_flags)"
+
+cmd_image="$(image_name)"
+cmd_execcmd="${unnamedArgs[@]}"
+
+cmd="${cmd_path} ${cmd_subcmd} ${cmd_options} ${cmd_image} ${cmd_execcmd}";
+
+# print the command
+echoerr "exec'ing = \"${cmd}\"";
+
+# run the command:
+# if we are testing the command ($noeval == "true"),
+# just print it to stdout. otherwise, evaluate the
+# command.
+if [[ "${noeval}" == "true" ]] ; then
+    cat << _END_
+chex-path: ${cmd_path}
+chex-subcmd: ${cmd_subcmd}
+chex-options: ${cmd_options}
+chex-image: ${cmd_image}
+chex-execcmd: ${cmd_execcmd}
+chex-command: ${cmd}
+_END_
+else
+    eval ${cmd};
+fi;
+
+exit $?
