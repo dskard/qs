@@ -62,6 +62,7 @@ function watch-docker-ps {
 
 function restart_alsa {
   pulseaudio -k
+  sleep 2
   sudo alsa force-reload
 }
 
