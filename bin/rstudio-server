@@ -35,7 +35,7 @@ container_exists=$(( $(docker container ls -a --filter "name=${container_name}" 
 case $1 in
 
     load)
-        chromium-browser --incognito --new-window http://localhost:8787 &
+        ch http://localhost:8787 &
     ;;
 
     remove)
