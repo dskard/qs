@@ -66,6 +66,15 @@ function restart_alsa {
   sudo alsa force-reload
 }
 
+function docker-cleanup {
+  # remove stopped containers
+  docker ps -aq --no-trunc -f status=exited | xargs docker rm
+
+  # remove all unused or dangling images, containers, volumes, networks
+  docker system prune
+
+}
+
 export EDITOR=vim
 
 if [ -f ~/.bash_aliases_local ]; then
