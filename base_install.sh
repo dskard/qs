@@ -20,6 +20,17 @@ aptitude -y install \
     curl \
     dia \
     dict \
+    dictd \
+    dict-bouvier \
+    dict-elements \
+    dict-foldoc \
+    dict-freedict-all \
+    dict-gazetteer2k \
+    dict-gcide \
+    dict-jargon \
+    dict-moby-thesaurus \
+    dict-vera \
+    dict-wn \
     diffutils \
     dos2unix \
     doxygen \
