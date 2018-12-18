@@ -18,6 +18,22 @@
 
 set -e
 
+function print_help() {
+        cat << EOF
+USAGE: $( basename $0 ) <command> [args ...]
+
+load        launch a web browser, pointed at the RStudio Server
+remove      remove the Docker container hosting the RStudio Server
+restart     restart the Docker container hosting the RStudio Server
+shell       enter into the Docker container hosting the RStudio Server
+start       start the Docker container hosting the RStudio Server
+stop        stop the Docker container hosting the RStudio Server
+update      update the Docker image, with "docker pull", use to host the RStudio Server
+
+EOF
+    exit $?
+}
+
 container_user="rstudio"
 container_name="rstudio-server"
 image_name="rocker/ropensci"
@@ -33,6 +49,10 @@ anaconda_path="/opt/anaconda3/5.0.1"
 container_exists=$(( $(docker container ls -a --filter "name=${container_name}" | wc -l) == 2 ))
 
 case $1 in
+
+    help)
+        print_help;
+    ;;
 
     load)
         ch http://localhost:8787 &
