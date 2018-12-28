@@ -33,5 +33,5 @@ fi
 # setup use script
 
 cat <<- _END_ > ${profiledir}/${pkgname}-${VERSION}.sh
-export PATH=${installprefix}:${PATH}
+export PATH=${installprefix}:\${PATH}
 _END_
