@@ -9,7 +9,7 @@ set -x
 set -e
 
 pkgname=docker-compose
-VERSION=1.16.1
+VERSION=1.23.2
 basedir=/opt
 environdir=${basedir}/environ.d
 profiledir=/etc/profile.d
