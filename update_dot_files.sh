@@ -4,6 +4,7 @@ dotfiles="\
     .bash_aliases \
     .curlrc \
     .tclshrc \
+    .tkdiffrc \
     .vimrc \
     .Xresources \
     .xscreensaver \
