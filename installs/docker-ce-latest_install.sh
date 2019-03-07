@@ -12,7 +12,7 @@ apt-cache policy docker-ce
 apt-get install -y docker-ce
 
 # install syntax highlighting for docker in vim
-aptitude -y install \
+apt-get install -y \
     vim-syntax-docker \
 
 
