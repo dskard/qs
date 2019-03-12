@@ -13,6 +13,7 @@
 #  -to : End position of the GIF file
 #  -r : frame rate. You can increase the value to get more quality GIF file
 #  -vf : filter graph. To scale the GIF image in the desired size.
+#  -loop -1: don't loop the gif
 #  $2 : output file
 
 
@@ -21,4 +22,5 @@ ffmpeg \
     -i $1 \
     -r 3 \
     -vf scale=800:-1 \
+    -loop -1 \
     $2
