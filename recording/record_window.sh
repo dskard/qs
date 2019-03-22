@@ -54,7 +54,7 @@ fi
 # https://trac.ffmpeg.org/wiki/Encode/H.264
 # https://trac.ffmpeg.org/wiki/Encode/MPEG-4
 
-avconv \
+ffmpeg \
     -f alsa \
     -i pulse \
     -f x11grab \

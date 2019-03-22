@@ -8,4 +8,4 @@ else
     res=$2
 fi
 
-avconv -f alsa -i pulse -f x11grab -r 25 -s $res -i :0.0+1440,0 -vcodec libx264 -pre:0 ultrafast -threads 4 $1.mkv
+ffmpeg -f alsa -i pulse -f x11grab -r 25 -s $res -i :0.0+1440,0 -vcodec libx264 -pre:0 ultrafast -threads 4 $1.mkv
