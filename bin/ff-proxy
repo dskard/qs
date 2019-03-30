@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# you can also pass in firefox command line options like `-private`
+#
+# ./ff -private
+
+# create a temporary directory to hold the profile
+profiledir=$(mktemp -d /tmp/ff.XXXXXXXXX)
+
+# create the temporary profile
+firefox --headless -CreateProfile "stock ${profiledir}" 2>/dev/null
+
+# copy my preferences to the new profile.
+#cp ~/.mozilla/firefox/*.stock-clean-1/prefs.js ${profiledir}/prefs.js
+cp ~/.mozilla/firefox/*.default/prefs.js ${profiledir}/prefs.js
+
+# setup proxy stuff
+proxy_host="localhost"
+proxy_port="8080"
+prefs="${profiledir}/prefs.js"
+
+echo 'user_pref("network.proxy.ftp", "localhost");' >> ${prefs}
+echo 'user_pref("network.proxy.ftp_port", 8080);' >> ${prefs}
+echo 'user_pref("network.proxy.http", "localhost");' >> ${prefs}
+echo 'user_pref("network.proxy.http_port", 8080);' >> ${prefs}
+echo 'user_pref("network.proxy.share_proxy_settings", true);' >> ${prefs}
+echo 'user_pref("network.proxy.socks", "localhost");' >> ${prefs}
+echo 'user_pref("network.proxy.socks_port", 8080);' >> ${prefs}
+echo 'user_pref("network.proxy.ssl", "localhost");' >> ${prefs}
+echo 'user_pref("network.proxy.ssl_port", 8080);' >> ${prefs}
+echo 'user_pref("network.proxy.type", 1);' >> ${prefs}
+
+
+# launch the new browser with any additional flags from the command line
+firefox -no-remote -profile "${profiledir}" $* http://mitm.it
+
+# remove the temporary profile
+rm -rf ${profiledir}
