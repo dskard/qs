@@ -16,19 +16,19 @@ cp ~/.mozilla/firefox/*.default/prefs.js ${profiledir}/prefs.js
 
 # setup proxy stuff
 proxy_host="localhost"
-proxy_port="8080"
+proxy_port="2020"
 prefs="${profiledir}/prefs.js"
 
-echo 'user_pref("network.proxy.ftp", "localhost");' >> ${prefs}
-echo 'user_pref("network.proxy.ftp_port", 8080);' >> ${prefs}
-echo 'user_pref("network.proxy.http", "localhost");' >> ${prefs}
-echo 'user_pref("network.proxy.http_port", 8080);' >> ${prefs}
-echo 'user_pref("network.proxy.share_proxy_settings", true);' >> ${prefs}
-echo 'user_pref("network.proxy.socks", "localhost");' >> ${prefs}
-echo 'user_pref("network.proxy.socks_port", 8080);' >> ${prefs}
-echo 'user_pref("network.proxy.ssl", "localhost");' >> ${prefs}
-echo 'user_pref("network.proxy.ssl_port", 8080);' >> ${prefs}
-echo 'user_pref("network.proxy.type", 1);' >> ${prefs}
+echo "user_pref(\"network.proxy.ftp\", \"${proxy_host}\")" >> ${prefs}
+echo "user_pref(\"network.proxy.ftp_port\", ${proxy_port});" >> ${prefs}
+echo "user_pref(\"network.proxy.http\", \"${proxy_host}\");" >> ${prefs}
+echo "user_pref(\"network.proxy.http_port\", ${proxy_port});" >> ${prefs}
+echo "user_pref(\"network.proxy.share_proxy_settings\", true);" >> ${prefs}
+echo "user_pref(\"network.proxy.socks\", \"${proxy_host}\");" >> ${prefs}
+echo "user_pref(\"network.proxy.socks_port\", ${proxy_port});" >> ${prefs}
+echo "user_pref(\"network.proxy.ssl\", \"${proxy_host}\");" >> ${prefs}
+echo "user_pref(\"network.proxy.ssl_port\", ${proxy_port});" >> ${prefs}
+echo "user_pref(\"network.proxy.type\", 1);" >> ${prefs}
 
 
 # launch the new browser with any additional flags from the command line

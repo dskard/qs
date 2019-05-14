@@ -9,6 +9,10 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 _END_
 
-# install libffi-dev for python versions 3.7.2 and up
-sudo apt-get install -y libffi-dev
+# install additional packages:
+# libffi-dev for python versions 3.7.2 and up
+# libsqlite3-dev for all versions?
+sudo apt-get install -y \
+    libffi-dev \
+    libsqlite3-dev
 
