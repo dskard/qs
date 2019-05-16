@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+docker run --rm -it \
+    -v ~/.mitmproxy:/home/mitmproxy/.mitmproxy \
+    -p 2020:8080 \
+    -p 127.0.0.1:2021:8081 \
+    mitmproxy/mitmproxy \
+    mitmweb --web-iface 0.0.0.0
