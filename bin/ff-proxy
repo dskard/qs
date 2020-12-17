@@ -11,8 +11,7 @@ profiledir=$(mktemp -d /tmp/ff.XXXXXXXXX)
 firefox --headless -CreateProfile "stock ${profiledir}" 2>/dev/null
 
 # copy my preferences to the new profile.
-#cp ~/.mozilla/firefox/*.stock-clean-1/prefs.js ${profiledir}/prefs.js
-cp ~/.mozilla/firefox/*.default/prefs.js ${profiledir}/prefs.js
+cp ~/.mozilla/firefox/*.default-release/prefs.js ${profiledir}/prefs.js
 
 # setup proxy stuff
 proxy_host="localhost"

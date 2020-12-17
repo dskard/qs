@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+ff http://localhost:2021 &

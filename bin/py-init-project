@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# py-init-project <python-version>
+# $1 is the version of python
+
+DIRNAME=${PWD##*/}
+
+if [ "$#" -ne 1 ]; then
+    echo "USAGE: py-init-project <python-version>"
+fi
+
+pyenv virtualenv $1 ${DIRNAME}
+pyenv local ${DIRNAME}
+pip install pipenv
+
+pipenv install --dev --pre black
+pipenv install --dev pdbpp
+
+echo "To install new Python packages use:"
+echo "pipenv install <package-name>"

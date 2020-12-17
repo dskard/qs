@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+today=`date +%Y/%m/%d`
+year=`date -d ${today} +%Y`
+month=`date -d ${today} +%m`
+day=`date -d ${today} +%d`
+
+diddir=${HOME}/projects/private/whatidid
+template=${diddir}/template.daily.Rmd
+f=${diddir}/${year}/${month}/${day}.Rmd
+
+# if the note year and month directories don't exist
+# then create them
+mkdir -p `dirname ${f}`
+
+# if the note file does not exist, then
+# create it and set the date in it
+if [[ ! -e ${f} ]] ; then
+    cp ${template} ${f}
+    sed -i "s+{{DATE}}+${today}+" ${f}
+fi
+
+vi ${f}

@@ -35,8 +35,16 @@ EOF
 }
 
 container_user="rstudio"
+#container_user_id=`id -u`
+#container_user_group=`id -g`
+container_user_id=1001
+container_user_group=1001
 container_name="rstudio-server"
-image_name="rocker/ropensci"
+#image_name="rocker/ropensci"
+#image_name="rocker/rstudio"
+#image_name="rocker/rstudio-daily"
+#image_name="rocker/tidyverse"
+image_name="rocker/rstudio:testing"
 
 # set the directory where local packages should be installed
 # may also need to change the location in .Rprofile
@@ -81,6 +89,8 @@ case $1 in
             echo "starting stopped container"
             docker start ${container_name}
         else
+            #    -e PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig \
+
             echo "starting new container"
             docker run \
                 -d \
@@ -88,15 +98,15 @@ case $1 in
                 --volume=/home/zx/projects:/home/rstudio/repos \
                 --volume=${anaconda_path}:/opt/anaconda \
                 --name=${container_name} \
-                --net=host \
                 --workdir=/home/rstudio \
                 -p 8787:8787 \
-                -e USERID=`id -u` \
-                -e GROUPID=`id -g` \
+                -e USERID=${container_user_id} \
+                -e GROUPID=${container_user_group} \
                 -e UMASK=022 \
                 -e ROOT=TRUE \
                 -e R_LIBS_USER=${local_packages_dir} \
                 -e ANACONDA_PATH=/opt/anaconda/bin \
+                -e PASSWORD=password \
                 ${image_name} \
                 bash -c 'PATH=/opt/anaconda/bin:${PATH}; /init'
         fi

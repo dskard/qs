@@ -11,8 +11,14 @@ profiledir=$(mktemp -d /tmp/ff.XXXXXXXXX)
 firefox --headless -CreateProfile "stock ${profiledir}" 2>/dev/null
 
 # copy my preferences to the new profile.
-#cp ~/.mozilla/firefox/*.stock-clean-1/prefs.js ${profiledir}/prefs.js
-cp ~/.mozilla/firefox/*.default/prefs.js ${profiledir}/prefs.js
+cp ~/.mozilla/firefox/*.default-release/prefs.js ${profiledir}/prefs.js
+
+prefs="${profiledir}/user.js"
+echo ${prefs}
+
+#echo "user_pref(\"browser.urlbar.placeholderName\", \"DuckDuckGo\");" >> ${prefs}
+#echo "user_pref(\"browser.search.hiddenOneOffs\", \"Google,Bing,Amazon.com,eBay,Twitter,Wikipedia (en)\");" >> ${prefs}
+echo "" >> ${prefs}
 
 # launch the new browser with any additional flags from the command line
 firefox -no-remote -profile "${profiledir}" $*

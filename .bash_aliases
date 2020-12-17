@@ -75,7 +75,19 @@ function docker-cleanup {
 
 }
 
+function docker-remove {
+    # usage docker-remove "\-1.5.14.1053"
+    docker rmi $(docker images | grep "$1" | awk '{print $3}') --force
+}
+
+function docker-search {
+    # usage docker-search "\-1.5.14.1053"
+    docker images | grep "$1"
+}
+
 export EDITOR=vim
+
+alias R="R --vanilla"
 
 if [ -f ~/.bash_aliases_local ]; then
     . ~/.bash_aliases_local
