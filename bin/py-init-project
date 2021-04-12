@@ -9,6 +9,7 @@ if [ "$#" -ne 1 ]; then
     echo "USAGE: py-init-project <python-version>"
 fi
 
+pyenv install $1 --skip-existing
 pyenv virtualenv $1 ${DIRNAME}
 pyenv local ${DIRNAME}
 pip install pipenv
