@@ -9,6 +9,8 @@ if [ "$#" -ne 1 ]; then
     echo "USAGE: py-init-project <python-version>"
 fi
 
+export PYTHON_CONFIGURE_OPTS="--enable-shared"
+
 pyenv install $1 --skip-existing
 pyenv virtualenv $1 ${DIRNAME}
 pyenv local ${DIRNAME}
