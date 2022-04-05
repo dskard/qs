@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# https://photo.stackexchange.com/a/119646
+exiftool -overwrite_original -all:all= -tagsfromfile @ -exif:Orientation $@

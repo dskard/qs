@@ -1,8 +1,21 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
-set -x 
+set -x
 
-wget https://s3.amazonaws.com/rstudio-ide-build/desktop/xenial/amd64/rstudio-1.2.1242-amd64.deb -O rstudio-ide.deb
+i=$(curl -s https://dailies.rstudio.com/rstudio/latest/index.json | jq ".products.desktop.platforms.bionic")
 
-gdebi -n rstudio-ide.deb
+link=$(echo $i | jq -r ".link")
+filename=$(echo $i | jq -r ".filename")
+sha256=$(echo $i | jq -r ".sha256")
+
+# download the file, if needed
+if [ ! -f ${filename} ] ; then
+    curl -o ${filename} $link
+fi
+
+# check the file's checksum
+echo "${sha256}  ${filename}" | sha256sum --strict -c
+
+# install the package
+gdebi -n ${filename}
 
