@@ -24,7 +24,7 @@ ffmpeg \
     -y \
     -ss 00:00:00 \
     -i $1 \
-    -vf fps=10,scale=800:-1:flags=lanczos,palettegen \
+    -vf fps=10,scale=1280:-1:flags=lanczos,palettegen \
     palette.png
 
 # output the gif using the palette
@@ -33,7 +33,7 @@ ffmpeg \
     -i $1 \
     -i palette.png \
     -loop -1 \
-    -filter_complex "fps=10,scale=800:-1:flags=lanczos[x];[x][1:v]paletteuse" \
+    -filter_complex "fps=30,scale=1280:-1:flags=lanczos[x];[x][1:v]paletteuse" \
     $2
 
 rm palette.png
