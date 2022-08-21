@@ -1,23 +1,86 @@
 #!/usr/bin/env bash
 
-# py-init-project <python-version>
+# py-init-project <python-version> [virtualenv-name]
 # $1 is the version of python
+# $2 is the virtualenv name
 
-DIRNAME=${PWD##*/}
-
-if [ "$#" -ne 1 ]; then
-    echo "USAGE: py-init-project <python-version>"
+if [ "$#" -lt 1 -o "$#" -gt 2 ]; then
+    echo "USAGE: py-init-project <python-version> [virtualenv-name]"
 fi
 
 export PYTHON_CONFIGURE_OPTS="--enable-shared"
+PYTHON_VERSION=$1
 
-pyenv install $1 --skip-existing
-pyenv virtualenv $1 ${DIRNAME}
+if [ "$#" -eq 2 ]; then
+    DIRNAME=$2
+else
+    DIRNAME=${PWD##*/}
+fi
+
+set -euxo pipefail
+
+pyenv install ${PYTHON_VERSION} --skip-existing
+pyenv uninstall -f ${DIRNAME}
+pyenv virtualenv ${PYTHON_VERSION} ${DIRNAME}
 pyenv local ${DIRNAME}
-pip install pipenv
 
-pipenv install --dev --pre black
-pipenv install --dev pdbpp
+# install these through pip so they are
+# properly setup in pyenv's shims
+pip install black pytest poetry
 
-echo "To install new Python packages use:"
-echo "pipenv install <package-name>"
+# setup poetry
+rm -f pyproject.toml
+python -m poetry init \
+    --name ${DIRNAME} \
+    --author dskard \
+    --dev-dependency black \
+    --dev-dependency pytest \
+    --dev-dependency pdbpp \
+    --license MIT \
+    -n
+
+python -m poetry install
+
+# setup directory structure
+mkdir -p src/${DIRNAME} tests/
+touch src/${DIRNAME}/__init__.py
+touch tests/__init__.py
+
+# add a Makefile
+cat << EOF > Makefile
+PROJECT=${DIRNAME}
+PYTESTOPTS?=
+PYTHON_VERSION?=${PYTHON_VERSION}
+
+.PHONY: pyenv
+pyenv:
+	pyenv install \${PYTHON_VERSION} --skip-existing
+	pyenv uninstall \${PROJECT} || true
+	pyenv virtualenv \${PYTHON_VERSION} \${PROJECT}
+	pyenv local \${PROJECT}
+
+.PHONY: all
+all:
+	poetry build
+
+.PHONY: install
+install:
+	poetry install
+
+.PHONY: run
+run:
+	poetry run ...
+
+.PHONY: test
+test:
+	poetry run pytest \\
+	    --verbose \\
+	    --tb=short \\
+	    \${PYTESTOPTS}
+
+.PHONY: clean
+clean:
+	find . \\( -name '*.pyc' -or -name '*.pyo' \\) -print -delete
+	find . -name '__pycache__' -print -delete
+EOF
+

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# py-init-venv <python-version> [virtualenv-name]
+# $1 is the version of python
+# $2 is the virtualenv name
+
+if [ "$#" -lt 1 -o "$#" -gt 2 ]; then
+    echo "USAGE: py-init-venv <python-version> [virtualenv-name]"
+fi
+
+export PYTHON_CONFIGURE_OPTS="--enable-shared"
+PYTHON_VERSION=$1
+
+if [ "$#" -eq 2 ]; then
+    DIRNAME=$2
+else
+    DIRNAME=${PWD##*/}
+fi
+
+set -euxo pipefail
+
+pyenv install ${PYTHON_VERSION} --skip-existing
+pyenv uninstall -f ${DIRNAME}
+pyenv virtualenv ${PYTHON_VERSION} ${DIRNAME}
+pyenv local ${DIRNAME}
+
+# install these through pip so they are
+# properly setup in pyenv's shims
+pip install black pytest poetry
