@@ -68,70 +68,127 @@ set list listchars=tab:>-,trail:-
 "colorscheme solarized
 "colorscheme evening
 "colorscheme calm
-colorscheme desert
+"colorscheme desert
 
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" turn off syntax for vimdiff
+if &diff
+    syntax off
+endif
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" start plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" install supertab
-Plugin 'ervandew/supertab'
+" install instructions from
+" https://github.com/allexcd/vim-setup
 
-" install YouCompleteMe
-" don't forget to run the compiled part,
-" see qs/installs/youcompleteme.sh
-" disable YouCompleteMet with vim command:
-" let loaded_youcompleteme = 0
-Plugin 'valloric/YouCompleteMe'
+" install vim-plug as a plugin manager
+" do this in your shell:
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+" Specify a directory for plugins
+call plug#begin('~/.vim/plugged')
 
+" List here the plugins with Plug commands
+" See all possible ways to list a plugin: https://github.com/junegunn/vim-plug
+" Ex: Plug 'https://github.com/username/reponame.git'
 
-" leader key is backslash \
+" Install typescript-vim plugin to enable typescript syntax support
+Plug 'https://github.com/leafgarland/typescript-vim'
 
-" turn off YCM
-nnoremap <leader>Y :let g:ycm_auto_trigger=0<CR>
+" Install vim-javascript plugin to enable javascript syntax highlighting
+Plug 'https://github.com/pangloss/vim-javascript'
 
-" turn on YCM
-nnoremap <leader>y :let g:ycm_auto_trigger=1<CR>
+" Install YouCompleteMe plugin to to get completion suggestions automatically while typing
+"Plug 'https://github.com/Valloric/YouCompleteMe'
 
-" YCM off by default
-let ycm_auto_trigger=0
-
-"" enables auto closing of the preview window when
-"" the user accepts the offered completion string
-"let g:ycm_autoclose_preview_window_after_completion=1
-"
-"" map Jedi's jump to definition/declaration feature to the <leader>g shortcut
-"nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
-"
-"" pull from keywords in the
-"" 1. current file,
-"" 2. other buffers (closed or still open),
-"" 3. the current tags
-"set complete=.,b,u,]
-"
-"
-"set wildmode=longest,list:longest
-"
-"" shows a menu and, if available, any additional tips
-"" such as the method signature or defining file
-"set completeopt=menu,preview
-"
-"
-"let g:python3_host_prog='/opt/anaconda2/5.0.1/bin/python2'
-"let g:python_host_prog='/opt/anaconda3/5.0.1/bin/python3'
-
+" Syntax checking
+Plug 'https://github.com/vim-syntastic/syntastic'
 
 " markdown syntax highlighting
 " https://github.com/gabrielelana/vim-markdown
-Bundle 'gabrielelana/vim-markdown'
+Plug 'gabrielelana/vim-markdown'
 
+" r markdown syntax support
+" https://github.com/vim-pandoc/vim-rmarkdown
+Plug 'https://github.com/vim-pandoc/vim-rmarkdown'
+
+" quarto-vim handles syntax highlighthing for qmd files
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'quarto-dev/quarto-vim'
+
+" Solarized Colorscheme for Vim
+Plug 'https://github.com/altercation/vim-colors-solarized'
+
+" supertab
+Plug 'https://github.com/ervandew/supertab'
+
+" Asynchronous Lint Engine
+Plug 'dense-analysis/ale'
+
+" Initialize the plugin system
+call plug#end()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" end plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" setup vim-colors-solarized
+syntax enable
+" set background=light
+set background=dark
+"let g:solarized_termcolors=256
+let g:solarized_contrast="high"
+"let g:solarized_visibility="high"
+colorscheme solarized
+"call togglebg#map("<F4>")
+
+
+" turn off quarto-vim's conceal stuff
+let g:pandoc#syntax#conceal#use = 0
+
+" turn off vim-rmarkdown's code folding
+set nofoldenable
+
+"" install YouCompleteMe
+"" don't forget to run the compiled part,
+"" see qs/installs/youcompleteme.sh
+"" disable YouCompleteMet with vim command:
+"" let loaded_youcompleteme = 0
+""Plugin 'valloric/YouCompleteMe'
+"
+"" leader key is backslash \
+"
+"" turn off YCM
+""nnoremap <leader>Y :let g:ycm_auto_trigger=0<CR>
+"
+"" turn on YCM
+""nnoremap <leader>y :let g:ycm_auto_trigger=1<CR>
+"
+"" YCM off by default
+""let ycm_auto_trigger=0
+"
+""" enables auto closing of the preview window when
+""" the user accepts the offered completion string
+""let g:ycm_autoclose_preview_window_after_completion=1
+""
+""" map Jedi's jump to definition/declaration feature to the <leader>g shortcut
+""nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+""
+""" pull from keywords in the
+""" 1. current file,
+""" 2. other buffers (closed or still open),
+""" 3. the current tags
+""set complete=.,b,u,]
+""
+""
+""set wildmode=longest,list:longest
+""
+""" shows a menu and, if available, any additional tips
+""" such as the method signature or defining file
+""set completeopt=menu,preview
