@@ -26,11 +26,20 @@ pyenv local ${DIRNAME}
 
 # install these through pip so they are
 # properly setup in pyenv's shims
-pip install black pytest poetry
+pyenv exec pip install black pytest pdbpp poetry
+
+# set the VIRTUAL_ENV variable.
+# without it, pyenv-virtualenv and poetry
+# don't play nice with each other:
+# pyenv-virtualenv doesn't set it
+# poetry expects it
+export VIRTUAL_ENV=$(pyenv prefix)
+echo "export VIRTUAL_ENV=\$(pyenv prefix)" >> .envrc
+direnv allow
 
 # setup poetry
 rm -f pyproject.toml
-python -m poetry init \
+pyenv exec python -m poetry init \
     --name ${DIRNAME} \
     --author dskard \
     --dev-dependency black \
@@ -39,12 +48,13 @@ python -m poetry init \
     --license MIT \
     -n
 
-python -m poetry install
+pyenv exec python -m poetry install
 
 # setup directory structure
 mkdir -p src/${DIRNAME} tests/
 touch src/${DIRNAME}/__init__.py
 touch tests/__init__.py
+touch tests/pytest.ini
 
 # add a Makefile
 cat << EOF > Makefile
@@ -58,6 +68,10 @@ pyenv:
 	pyenv uninstall \${PROJECT} || true
 	pyenv virtualenv \${PYTHON_VERSION} \${PROJECT}
 	pyenv local \${PROJECT}
+	pip install black pytest pdbpp poetry
+	sed -i '/export VIRTUAL_ENV=/d' .envrc || true
+	echo "export VIRTUAL_ENV=\\\$\$\$\\(pyenv prefix)" >> .envrc
+	direnv allow || true
 
 .PHONY: all
 all:

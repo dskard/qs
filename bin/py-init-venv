@@ -26,4 +26,14 @@ pyenv local ${DIRNAME}
 
 # install these through pip so they are
 # properly setup in pyenv's shims
-pip install black pytest poetry
+pyenv exec pip install black pytest pdbpp poetry
+
+# set the VIRTUAL_ENV variable.
+# without it, pyenv-virtualenv and poetry
+# don't play nice with each other:
+# pyenv-virtualenv doesn't set it
+# poetry expects it
+export VIRTUAL_ENV=$(pyenv prefix)
+echo "export VIRTUAL_ENV=\$(pyenv prefix)" >> .envrc
+direnv allow
+
