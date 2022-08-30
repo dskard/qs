@@ -61,6 +61,9 @@ au BufEnter .procmailrc exe "set syntax=sh"
 "for Go programming:
 au BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 sts=4
 
+" for Jenkinsfiles
+autocmd BufNewFile,BufRead Jenkinsfile,*.Jenkinsfile,Jenkinsfile.* set syntax=groovy
+
 "set list listchars=tab:��,trail:�
 set list listchars=tab:>-,trail:-
 
@@ -130,6 +133,9 @@ Plug 'https://github.com/ervandew/supertab'
 
 " Asynchronous Lint Engine
 Plug 'dense-analysis/ale'
+
+" groovy syntax
+Plug 'https://github.com/modille/groovy.vim'
 
 " Initialize the plugin system
 call plug#end()
