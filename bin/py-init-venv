@@ -6,6 +6,7 @@
 
 if [ "$#" -lt 1 -o "$#" -gt 2 ]; then
     echo "USAGE: py-init-venv <python-version> [virtualenv-name]"
+    exit
 fi
 
 export PYTHON_CONFIGURE_OPTS="--enable-shared"

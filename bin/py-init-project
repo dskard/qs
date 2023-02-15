@@ -6,6 +6,7 @@
 
 if [ "$#" -lt 1 -o "$#" -gt 2 ]; then
     echo "USAGE: py-init-project <python-version> [virtualenv-name]"
+    exit
 fi
 
 export PYTHON_CONFIGURE_OPTS="--enable-shared"
@@ -26,7 +27,7 @@ pyenv local ${DIRNAME}
 
 # install these through pip so they are
 # properly setup in pyenv's shims
-pyenv exec pip install black pytest pdbpp poetry
+pyenv exec pip install black pytest pdbpp poetry python-semantic-release
 
 # set the VIRTUAL_ENV variable.
 # without it, pyenv-virtualenv and poetry
@@ -45,16 +46,23 @@ pyenv exec python -m poetry init \
     --dev-dependency black \
     --dev-dependency pytest \
     --dev-dependency pdbpp \
+    --dev-dependency python-semantic-release \
     --license MIT \
-    -n
+    --no-interaction
 
-pyenv exec python -m poetry install
+# use the src dir setup
+sed -i "s/packages = \[.*\]/packages = \[{include = \"${DIRNAME}\", from = \"src\"},\]/" pyproject.toml
 
 # setup directory structure
 mkdir -p src/${DIRNAME} tests/
 touch src/${DIRNAME}/__init__.py
+echo "__version__ = \"0.0.0\"" >> src/${DIRNAME}/__init__.py
 touch tests/__init__.py
 touch tests/pytest.ini
+mkdir -p .github/workflows
+touch README.md
+
+pyenv exec python -m poetry install
 
 # add a Makefile
 cat << EOF > Makefile
@@ -98,3 +106,21 @@ clean:
 	find . -name '__pycache__' -print -delete
 EOF
 
+# add semantic release section to pyproject.toml
+cat << EOF >> pyproject.toml
+
+[tool.semantic_release]
+version_variable = [
+    "src/${DIRNAME}/__init__.py:__version__"
+]
+version_toml = [
+    "pyproject.toml:tool.poetry.version"
+]
+major_on_zero = false
+branch = "main"
+upload_to_PyPI = true
+upload_to_release = true
+build_command = "pip install poetry && poetry build"
+EOF
+
+# add github workflow files
