@@ -92,6 +92,7 @@ endif
 " do this in your shell:
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 "    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" then Open vim and type :PlugInstall
 
 " Specify a directory for plugins
 call plug#begin('~/.vim/plugged')

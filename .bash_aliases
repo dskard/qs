@@ -1,6 +1,6 @@
 function lookup { dict $* | less; }
 
-function scrot_it { scrot -zsbcd 5 -q 100 $*; }
+function scrot_it { scrot -zbcd 5 -q 100 -s $*; }
 
 function joinpdf {
     # joinpdf outputfile inputfiles

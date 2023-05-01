@@ -6,12 +6,14 @@
 
 # create a temporary directory to hold the profile
 profiledir=$(mktemp -d /tmp/ff.XXXXXXXXX)
+profilename="stock-$(echo ${profiledir} | cut -d'/' -f3)"
 
 # create the temporary profile
-firefox --headless -CreateProfile "stock ${profiledir}" 2>/dev/null
+firefox --headless -CreateProfile "${profilename} ${profiledir}" 2>/dev/null
 
 # copy my preferences to the new profile.
-cp ~/.mozilla/firefox/*.default-release/prefs.js ${profiledir}/prefs.js
+#cp ~/.mozilla/firefox/*.default/prefs.js ${profiledir}/prefs.js
+cp ~/snap/firefox/common/.mozilla/firefox/*.default/prefs.js ${profiledir}/prefs.js
 
 prefs="${profiledir}/user.js"
 echo ${prefs}
