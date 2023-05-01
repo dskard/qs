@@ -111,6 +111,8 @@ Plug 'https://github.com/pangloss/vim-javascript'
 "Plug 'https://github.com/Valloric/YouCompleteMe'
 
 " Syntax checking
+" toggle auto-checking with
+" :SyntasticToggleMode
 Plug 'https://github.com/vim-syntastic/syntastic'
 
 " markdown syntax highlighting
@@ -133,10 +135,24 @@ Plug 'https://github.com/altercation/vim-colors-solarized'
 Plug 'https://github.com/ervandew/supertab'
 
 " Asynchronous Lint Engine
+" toggle with
+" :ALEToggle
+" :ALEEnable
 Plug 'dense-analysis/ale'
 
 " groovy syntax
 Plug 'https://github.com/modille/groovy.vim'
+
+" toml syntax
+" https://github.com/cespare/vim-toml
+Plug 'cespare/vim-toml', { 'branch': 'main' }
+
+" packer / hashicorp syntax
+" https://github.com/hashivim/vim-terraform.git
+Plug 'hashivim/vim-terraform'
+" https://github.com/hashivim/vim-vagrant
+Plug 'hashivim/vim-vagrant'
+
 
 " Initialize the plugin system
 call plug#end()
