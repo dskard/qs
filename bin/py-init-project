@@ -62,6 +62,10 @@ touch tests/pytest.ini
 mkdir -p .github/workflows
 touch README.md
 
+# pin urllib3 to below 2.0
+# https://github.com/python-poetry/poetry/issues/7936
+pyenv exec python -m poetry add --dev "urllib3<=2.0"
+
 pyenv exec python -m poetry install
 
 # add a Makefile
