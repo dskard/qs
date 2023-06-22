@@ -16,7 +16,8 @@ cat <<- _END_ >> /etc/hosts
 _END_
 
 # restart networking
-service network-manager restart
+#service network-manager restart
+systemctl restart NetworkManager.service
 
 # flush dns cache
 # /etc/rd.d/init.d/nscd restart
