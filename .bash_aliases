@@ -92,3 +92,12 @@ alias R="R --vanilla"
 if [ -f ~/.bash_aliases_local ]; then
     . ~/.bash_aliases_local
 fi
+
+# setup pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# setup direnv
+eval "$(direnv hook bash)"
+eval "$(pyenv virtualenv-init -)"

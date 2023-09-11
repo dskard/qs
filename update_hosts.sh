@@ -22,5 +22,6 @@ systemctl restart NetworkManager.service
 # flush dns cache
 # /etc/rd.d/init.d/nscd restart
 #/etc/init.d/nscd restart
-service nscd restart
+#service nscd restart
+systemctl restart nscd
 
