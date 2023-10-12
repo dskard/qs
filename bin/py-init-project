@@ -47,6 +47,7 @@ pyenv exec python -m poetry init \
     --dev-dependency pytest \
     --dev-dependency pdbpp \
     --dev-dependency python-semantic-release \
+    --dev-dependency pre-commit \
     --license MIT \
     --no-interaction
 
@@ -66,6 +67,7 @@ touch README.md
 # https://github.com/python-poetry/poetry/issues/7936
 pyenv exec python -m poetry add --dev "urllib3<=2.0"
 
+# install the project's dependencies
 pyenv exec python -m poetry install
 
 # add a Makefile
@@ -127,4 +129,49 @@ upload_to_release = true
 build_command = "pip install poetry && poetry build"
 EOF
 
+# add black configuration section to pyproject.toml
+cat << EOF >> pyproject.toml
+
+[tool.black]
+line-length = 88
+target-versions = ["py39"]
+include = '\.pyi?$'
+EOF
+
+# add pre-commit configuration file
+cat << EOF >> .pre-commit-config.yaml
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/psf/black
+    rev: 23.7.0
+    hooks:
+      - id: black
+        language_version: python3.9
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+EOF
+
+cat << EOF >> .flake8
+[flake8]
+max-line-length = 88
+extend-ignore = E203,E501
+#per-file-ignores =
+#    src/.../__init__.py:F401
+
+# vim:filetype=dosini
+EOF
+
+# install pre-commit hooks
+# maybe:
+# pyenv exec python -m pre-commit install
+pyenv exec pre-commit install
+
 # add github workflow files
+

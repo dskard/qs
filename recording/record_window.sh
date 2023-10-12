@@ -7,6 +7,9 @@
 #
 # recording will start after you choose a window.
 
+# take a look at:
+# https://unix.stackexchange.com/a/14170
+
 # getting window borders
 # http://unix.stackexchange.com/a/156349
 entire=false
