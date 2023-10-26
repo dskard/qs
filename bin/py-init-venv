@@ -21,7 +21,7 @@ fi
 set -euxo pipefail
 
 pyenv install ${PYTHON_VERSION} --skip-existing
-pyenv uninstall -f ${DIRNAME}
+pyenv virtualenv-delete ${DIRNAME} || true
 pyenv virtualenv ${PYTHON_VERSION} ${DIRNAME}
 pyenv local ${DIRNAME}
 

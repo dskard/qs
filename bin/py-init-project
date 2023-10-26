@@ -21,13 +21,16 @@ fi
 set -euxo pipefail
 
 pyenv install ${PYTHON_VERSION} --skip-existing
-pyenv uninstall -f ${DIRNAME}
+pyenv virtualenv-delete ${DIRNAME} || true
 pyenv virtualenv ${PYTHON_VERSION} ${DIRNAME}
 pyenv local ${DIRNAME}
 
 # install these through pip so they are
 # properly setup in pyenv's shims
-pyenv exec pip install black pytest pdbpp poetry python-semantic-release
+# may not need this anymore? since these packages are installed through poerty
+# they seem to show up now in `pyenv which packagename`
+#pyenv exec pip install black pytest pdbpp poetry python-semantic-release
+pyenv exec pip install poetry
 
 # set the VIRTUAL_ENV variable.
 # without it, pyenv-virtualenv and poetry
@@ -65,7 +68,14 @@ touch README.md
 
 # pin urllib3 to below 2.0
 # https://github.com/python-poetry/poetry/issues/7936
-pyenv exec python -m poetry add --dev "urllib3<=2.0"
+# maybe this isnt needed anymore either?
+# i think i was able to get around this by clearing poetry caches and doing an update
+# poetry cache list
+# poetry cache clear --all PyPI
+# poetry cache clear --all pypi
+# poetry update
+# poetry install
+#pyenv exec python -m poetry add --dev "urllib3<=2.0"
 
 # install the project's dependencies
 pyenv exec python -m poetry install
@@ -79,13 +89,15 @@ PYTHON_VERSION?=${PYTHON_VERSION}
 .PHONY: pyenv
 pyenv:
 	pyenv install \${PYTHON_VERSION} --skip-existing
-	pyenv uninstall \${PROJECT} || true
+	pyenv virtualenv-delete \${PROJECT} || true
 	pyenv virtualenv \${PYTHON_VERSION} \${PROJECT}
 	pyenv local \${PROJECT}
-	pip install black pytest pdbpp poetry
+	pip install poetry
 	sed -i '/export VIRTUAL_ENV=/d' .envrc || true
 	echo "export VIRTUAL_ENV=\\\$\$\$\\(pyenv prefix)" >> .envrc
 	direnv allow || true
+	poetry install
+
 
 .PHONY: all
 all:
