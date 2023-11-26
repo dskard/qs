@@ -33,6 +33,7 @@ apt -y install \
     dict-vera \
     dict-wn \
     diffutils \
+    direnv \
     dos2unix \
     doxygen \
     file \
