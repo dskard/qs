@@ -81,6 +81,10 @@ if &diff
     syntax off
 endif
 
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+let g:markdown_syntax_conceal = 0
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " start plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -93,6 +97,7 @@ endif
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 "    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 " then Open vim and type :PlugInstall
+" or from the shell type `vim +PlugInstall`
 
 " Specify a directory for plugins
 call plug#begin('~/.vim/plugged')
@@ -117,7 +122,8 @@ Plug 'https://github.com/vim-syntastic/syntastic'
 
 " markdown syntax highlighting
 " https://github.com/gabrielelana/vim-markdown
-Plug 'gabrielelana/vim-markdown'
+"Plug 'gabrielelana/vim-markdown'
+"Plug 'tpope/vim-markdown'
 
 " r markdown syntax support
 " https://github.com/vim-pandoc/vim-rmarkdown
@@ -174,6 +180,12 @@ colorscheme solarized
 
 " turn off quarto-vim's conceal stuff
 let g:pandoc#syntax#conceal#use = 0
+
+" disable folding?
+" This resolves slow pasting into files with markdown syntax highlighting
+" https://github.com/vim-pandoc/vim-pandoc/issues/316
+let g:pandoc#modules#disabled = ["folding"]
+
 
 " turn off vim-rmarkdown's code folding
 set nofoldenable
