@@ -30,7 +30,9 @@ pyenv local ${DIRNAME}
 # may not need this anymore? since these packages are installed through poerty
 # they seem to show up now in `pyenv which packagename`
 #pyenv exec pip install black pytest pdbpp poetry python-semantic-release
-pyenv exec pip install poetry
+# fix for poetry 1.7.0
+# https://github.com/python-poetry/poetry/issues/8634
+pyenv exec pip install poetry==1.6.1
 
 # set the VIRTUAL_ENV variable.
 # without it, pyenv-virtualenv and poetry
