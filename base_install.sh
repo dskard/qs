@@ -2,13 +2,14 @@
 
 set -x 
 
-apt-get -y install aptitude
-
-aptitude update
-aptitude -y upgrade
+apt update
+apt -y upgrade
 
 # general utilities
-aptitude -y install \
+#    network-manager-openvpn \
+#    subversion \
+#    unetbootin \
+apt -y install \
     aspell \
     binutils \
     bsdmainutils \
@@ -34,10 +35,8 @@ aptitude -y install \
     diffutils \
     dos2unix \
     doxygen \
-    exuberant-ctags \
     file \
     findutils \
-    flashplugin-installer \
     ftp \
     gdebi \
     geany \
@@ -67,7 +66,6 @@ aptitude -y install \
     mkisofs \
     mount \
     mpv \
-    network-manager-openvpn \
     nmap \
     nscd \
     ntp \
@@ -81,14 +79,12 @@ aptitude -y install \
     sed \
     sharutils \
     strace \
-    subversion \
     sudo \
     tar \
     tcpflow \
     time \
     tkdiff \
     traceroute \
-    unetbootin \
     unrar-free \
     unzip \
     valgrind \
@@ -98,9 +94,8 @@ aptitude -y install \
     zip \
 
 # programming languages, compilers, interpreters
-# Python is provided by Anaconda
-# R is installed by hand
-aptitude -y install \
+# python and R are installed by hand
+apt -y install \
     autoconf \
     autotools-dev \
     bash \
@@ -112,11 +107,9 @@ aptitude -y install \
     gfortran \
     libav-tools \
     libpcre3-dev \
-    octave \
     perl \
     perl-doc \
     perl-modules \
-    pidgin \
     python \
     tcl \
     tcl-doc \
@@ -124,7 +117,7 @@ aptitude -y install \
     tk \
 
 # latex packages
-aptitude -y install \
+apt -y install \
     pandoc \
     preview-latex-style \
     tex4ht \
@@ -148,36 +141,22 @@ aptitude -y install \
     texlive-science-doc \
     vim-latexsuite \
 
-# virtualbox packages
-aptitude -y install \
-    virtualbox \
-    virtualbox-dkms \
-    virtualbox-guest-dkms \
-    virtualbox-guest-x11 \
-    virtualbox-qt
-
 # install ufw firewall and openssh-server
-aptitude -y install \
+apt -y install \
     ufw \
     openssh-server \
     xauth
 
-aptitude -y install \
+apt -y install \
     apt-file \
     libreadline-dev \
-    libxt-dev \
-    mesa-common-dev \
-    libglu1-mesa-dev \
-    netcdf-bin \
+    libxt-dev
 
 apt-file update
 
 # arduino compilers
 aptitude -y install avrdude gcc-avr gdb-avr simulavr avr-libc
 
-
-# packages for building rappture
-#bash installs/rappture-build-env-deps_install.sh
 
 # docker-ce
 bash installs/docker-ce-latest_install.sh
@@ -192,18 +171,10 @@ bash installs/zoom-latest_install.sh
 bash installs/skype-latest_install.sh
 
 # vagrant
-bash installs/vagrant-2.0.1_install.sh
+#bash installs/vagrant-2.0.1_install.sh
 
 # google-chrome-stable
-bash installs/googlechrome_install.sh
-
-# packages for rstudio server
-#aptitude install \
-#    libboost1.55-dev \
-#    uuid-dev \
-#    ant \
-#    openjdk-7-jdk
-
+#bash installs/googlechrome_install.sh
 
 # installing ssl serts properly?
 # https://stackoverflow.com/a/30154802
