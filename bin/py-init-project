@@ -21,18 +21,16 @@ fi
 set -euxo pipefail
 
 pyenv install ${PYTHON_VERSION} --skip-existing
-pyenv virtualenv-delete ${DIRNAME} || true
+pyenv virtualenv-delete -f ${DIRNAME}
 pyenv virtualenv ${PYTHON_VERSION} ${DIRNAME}
 pyenv local ${DIRNAME}
 
 # install these through pip so they are
 # properly setup in pyenv's shims
-# may not need this anymore? since these packages are installed through poerty
-# they seem to show up now in `pyenv which packagename`
-#pyenv exec pip install black pytest pdbpp poetry python-semantic-release
 # fix for poetry 1.7.0
 # https://github.com/python-poetry/poetry/issues/8634
-pyenv exec pip install poetry==1.6.1
+#pyenv exec pip install poetry==1.6.1
+pyenv exec pip install poetry
 
 # set the VIRTUAL_ENV variable.
 # without it, pyenv-virtualenv and poetry

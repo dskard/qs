@@ -98,6 +98,11 @@ export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
+# setup renv-installer
+export RENV_ROOT="$HOME/.renv"
+command -v renv >/dev/null || export PATH="$RENV_ROOT/bin:$PATH"
+eval "$(renv init -)"
+
 # setup direnv
 eval "$(direnv hook bash)"
 eval "$(pyenv virtualenv-init -)"
