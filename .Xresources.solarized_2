@@ -24,6 +24,13 @@ XTerm*scrollBar:  off
 !XTerm*vt100*geometry:   88x24
 XTerm*vt100*geometry:   80x30
 
+! copy/paste translations
+! https://unix.stackexchange.com/a/225076
+xterm*VT100.Translations: #override \
+    Ctrl Shift <Key>V:    insert-selection(CLIPBOARD) \n\
+    Ctrl Shift <Key>C:    copy-selection(CLIPBOARD)
+
+
 !Colors
 !-------------------------
 !black
