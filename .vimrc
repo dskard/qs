@@ -120,6 +120,11 @@ Plug 'https://github.com/pangloss/vim-javascript'
 " :SyntasticToggleMode
 Plug 'https://github.com/vim-syntastic/syntastic'
 
+" make syntastic's shellcheck plugin use the -x flag
+" to allow for sourcing of files
+" https://vi.stackexchange.com/a/10013
+let g:syntastic_sh_shellcheck_args = "-x"
+
 " markdown syntax highlighting
 " https://github.com/gabrielelana/vim-markdown
 "Plug 'gabrielelana/vim-markdown'
