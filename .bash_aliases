@@ -87,8 +87,6 @@ function docker-search {
 
 export EDITOR=vim
 
-alias R="R --vanilla"
-
 if [ -f ~/.bash_aliases_local ]; then
     . ~/.bash_aliases_local
 fi
