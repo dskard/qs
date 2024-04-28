@@ -90,6 +90,7 @@ apt -y install \
     unzip \
     valgrind \
     vim \
+    vim-gtk3 \
     wget \
     xvnc4viewer \
     zip \
