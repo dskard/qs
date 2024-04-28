@@ -81,6 +81,24 @@ if &diff
     syntax off
 endif
 
+" using vim with a terminal
+" use :rightb vertical terminal
+" or  :below vertical terminal
+" to open the terminal
+"
+" Editing the terminal?!?
+" use Ctrl-w, N to enter 'Terminal-Normal' mode for scrolling
+" or from https://stackoverflow.com/a/61996363
+" use Ctrl-b to enter 'Terminal-Normal' mode with this remap:
+tnoremap <c-b> <c-\><c-n>
+" use i or a to exit 'Terminal-Normal' mode for regular terminal operation
+
+" copy code into buffer
+" Shift-V , "+y
+"
+" paste into shell
+" Ctrl-Shift-V
+
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:markdown_syntax_conceal = 0
 
