@@ -1,6 +1,10 @@
 set nocompatible
 syntax on
 set number
+
+" enable the mouse to be used for visual selections
+set mouse=a
+
 " tab multible lines at once
 map t ma>'t'a
 map T ma<'t'a
@@ -137,7 +141,7 @@ Plug 'https://github.com/pangloss/vim-javascript'
 " toggle auto-checking with
 " :SyntasticToggleMode
 Plug 'https://github.com/vim-syntastic/syntastic'
-"let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
 "nnoremap <C-w>E :SyntasticCheck<CR>
 
 " make syntastic's shellcheck plugin use the -x flag
