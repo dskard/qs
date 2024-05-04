@@ -87,14 +87,29 @@ function docker-search {
 
 export EDITOR=vim
 
-if [ -f ~/.bash_aliases_local ]; then
-    . ~/.bash_aliases_local
-fi
+# add Pulumi to the PATH
+export PATH=$PATH:$HOME/.pulumi/bin
+
+# add binaries from Go projects to PATH
+export PATH=$PATH:$HOME/go/bin
+
+# enable keychain
+# https://superuser.com/a/1808594
+eval "$(keychain --eval --quiet)"
 
 # setup pyenv
+# eval "$(pyenv init --path)"
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+
+# setup pyenv-virtualenv
+eval "$(pyenv virtualenv-init -)"
+
+# disable pyenv from changing the prompt
+# to show which virtualenv you are in
+# use `pyenv versions | grep "*"` instead
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 # setup renv-installer
 export RENV_ROOT="$HOME/.renv"
@@ -103,4 +118,35 @@ eval "$(renv init -)"
 
 # setup direnv
 eval "$(direnv hook bash)"
-eval "$(pyenv virtualenv-init -)"
+
+# setup nvm
+#export NVM_DIR="$HOME/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+# setup nvm to work with direnv
+# https://github.com/direnv/direnv/issues/335#issuecomment-921284934
+# https://github.com/direnv/direnv/issues/335#issuecomment-937051564
+# you probably still need a .nvmrc file in your directory with the version inside
+# in your .envrc add `use node`
+# or follow:
+# https://github.com/direnv/direnv/issues/335#issuecomment-1330333436
+#
+# or without setting the version in .nvmrc, you can set .envrc to
+# ```
+# use node 8.9.4
+# ```
+# for details see:
+# https://stackoverflow.com/a/62095070
+# https://github.com/direnv/direnv/wiki/Node#load-nodejs-version-specified-in-envrc
+export NODE_VERSION_PREFIX=v
+export NODE_VERSIONS="${NVM_DIR}/versions/node"
+
+# load other bash aliases
+if [ -f ~/.bash_aliases_local ]; then
+    . ~/.bash_aliases_local
+fi
+
