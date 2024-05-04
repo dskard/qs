@@ -189,6 +189,11 @@ Plug 'hashivim/vim-terraform'
 Plug 'hashivim/vim-vagrant'
 
 
+" justfile syntax
+" https://just.systems/man/en/chapter_11.html
+" https://github.com/NoahTheDuke/vim-just
+Plug 'NoahTheDuke/vim-just'
+
 " Initialize the plugin system
 call plug#end()
 
