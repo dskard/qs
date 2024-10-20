@@ -68,6 +68,12 @@ au BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 sts=4
 " for Jenkinsfiles
 autocmd BufNewFile,BufRead Jenkinsfile,*.Jenkinsfile,Jenkinsfile.* set syntax=groovy
 
+" make yml jinja2 template files use yml syntax highlighting
+au BufEnter *.yml.j2 exe "set syntax=yaml"
+
+" make md markdown files use markdown syntax highlighting
+"au BufEnter *.md exe "set syntax=markdown.pandoc"
+
 "set list listchars=tab:��,trail:�
 set list listchars=tab:>-,trail:-
 

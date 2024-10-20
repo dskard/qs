@@ -111,10 +111,10 @@ eval "$(pyenv virtualenv-init -)"
 # use `pyenv versions | grep "*"` instead
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
-# setup renv-installer
-export RENV_ROOT="$HOME/.renv"
-command -v renv >/dev/null || export PATH="$RENV_ROOT/bin:$PATH"
-eval "$(renv init -)"
+## setup renv-installer
+#export RENV_ROOT="$HOME/.renv"
+#command -v renv >/dev/null || export PATH="$RENV_ROOT/bin:$PATH"
+#eval "$(renv init -)"
 
 # setup direnv
 eval "$(direnv hook bash)"
@@ -144,6 +144,9 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 # https://github.com/direnv/direnv/wiki/Node#load-nodejs-version-specified-in-envrc
 export NODE_VERSION_PREFIX=v
 export NODE_VERSIONS="${NVM_DIR}/versions/node"
+
+# start the 1password daemon
+op daemon --background --timeout 0
 
 # load other bash aliases
 if [ -f ~/.bash_aliases_local ]; then
