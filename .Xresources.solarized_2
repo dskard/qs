@@ -4,7 +4,7 @@
 ! use `gpick` to visualize the hex colors
 !
 !fonts&stuff
-xterm*faceSize: 16
+xterm*faceSize: 11
 xterm*eightBitInput: false
 XTerm*faceName: Bitstream Vera Serif Mono
 !Background & foreground
