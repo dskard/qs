@@ -87,6 +87,12 @@ function docker-search {
 
 export EDITOR=vim
 
+# add TERMINFO so astral-sh and python from uv
+# dont complain about:
+#   Cannot read termcap database;
+# https://github.com/astral-sh/rye/issues/250
+export TERMINFO=/lib/terminfo
+
 # add Pulumi to the PATH
 export PATH=$PATH:$HOME/.pulumi/bin
 
