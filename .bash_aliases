@@ -106,7 +106,8 @@ eval "$(keychain --eval --quiet)"
 # setup pyenv
 # eval "$(pyenv init --path)"
 export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+#command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 # setup pyenv-virtualenv
@@ -118,6 +119,7 @@ eval "$(pyenv virtualenv-init -)"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 ## setup renv-installer
+## commented out, use rig instead, 20250208
 #export RENV_ROOT="$HOME/.renv"
 #command -v renv >/dev/null || export PATH="$RENV_ROOT/bin:$PATH"
 #eval "$(renv init -)"
@@ -130,8 +132,11 @@ eval "$(direnv hook bash)"
 #[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 #[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+# commented out 20250208, this was adding nvm to the path
+# i think i prefer to add node to the path through direnv
+# as shown below
+#export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 # setup nvm to work with direnv
 # https://github.com/direnv/direnv/issues/335#issuecomment-921284934
@@ -149,10 +154,43 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 # https://stackoverflow.com/a/62095070
 # https://github.com/direnv/direnv/wiki/Node#load-nodejs-version-specified-in-envrc
 export NODE_VERSION_PREFIX=v
+NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+export NVM_DIR
 export NODE_VERSIONS="${NVM_DIR}/versions/node"
 
 # start the 1password daemon
 op daemon --background --timeout 0
+
+function opon {
+    # OP_USER_UUID=$(op account list --format json | jq -r --arg account ${OP_ACCOUNT} '.[] | select(.url | contains($account)) .user_uuid')
+
+    # check if we are signed in
+    signed_in=$(op whoami &>/dev/null; echo $?)
+
+    if [[ "${signed_in}" == "1" ]] ; then
+        # we are not signed in, so sign in
+        eval "$(op signin)"
+        direnv reload
+    fi
+}
+
+function opoff {
+    # check if we are signed in.
+    signed_in=$(op whoami &>/dev/null; echo $?)
+
+    if [[ "${signed_in}" == "0" ]] ; then
+
+        # we are signed in
+        # figure out who we are signed in as.
+        OP_USER_UUID=$(op whoami --format json | jq -r '.user_uuid')
+
+        # signout
+        op signout
+
+        # unset the token
+        unset "OP_SESSION_${OP_USER_UUID}"
+    fi
+}
 
 # load other bash aliases
 if [ -f ~/.bash_aliases_local ]; then
