@@ -4,26 +4,73 @@
 #
 # ./ff -private
 
-# create a temporary directory to hold the profile
-profiledir=$(mktemp -d /tmp/ff.XXXXXXXXX)
-profilename="stock-$(echo ${profiledir} | cut -d'/' -f3)"
+set -euo pipefail
+
+# create a profile name
+profilename="stock-$(mktemp -u ff.XXXXXXXXXX)"
 
 # create the temporary profile
-firefox --headless -CreateProfile "${profilename} ${profiledir}" 2>/dev/null
+firefox --headless -CreateProfile "${profilename}" 2>/dev/null
+
+# wait for the profiles.ini file to be updated and recreated.
+sleep 1
+
+firefox_profiles_dir=${HOME}/snap/firefox/common/.mozilla/firefox
+profiledir="${firefox_profiles_dir}/"$(grep ${profilename} ${firefox_profiles_dir}/profiles.ini | grep Path | cut -d'=' -f2)
 
 # copy my preferences to the new profile.
-#cp ~/.mozilla/firefox/*.default/prefs.js ${profiledir}/prefs.js
-cp ~/snap/firefox/common/.mozilla/firefox/*.default/prefs.js ${profiledir}/prefs.js
-
+# create a user.js with the custom preference overrides
+# see these sites for more examples of user.js
+# * https://github.com/arkenfox/user.js
+# * https://github.com/yokoffing/Betterfox
 prefs="${profiledir}/user.js"
-echo ${prefs}
+#echo ${prefs}
 
-#echo "user_pref(\"browser.urlbar.placeholderName\", \"DuckDuckGo\");" >> ${prefs}
-#echo "user_pref(\"browser.search.hiddenOneOffs\", \"Google,Bing,Amazon.com,eBay,Twitter,Wikipedia (en)\");" >> ${prefs}
-echo "" >> ${prefs}
+cat << EOF > ${prefs}
+user_pref("browser.crashReports.unsubmittedCheck.autoSubmit2", true);
+user_pref("browser.discovery.enabled", false);
+user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
+user_pref("browser.newtabpage.activity-stream.feeds.topsites", false);
+user_pref("browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts.havePinned", "google");
+user_pref("browser.newtabpage.activity-stream.showSearch", false);
+user_pref("browser.newtabpage.activity-stream.showWeather", false);
+user_pref("browser.newtabpage.enabled", false);
+user_pref("browser.newtabpage.pinned", "[{\"url\":\"https://google.com\",\"label\":\"@google\",\"searchTopSite\":true}]");
+user_pref("browser.privatebrowsing.autostart", true);
+user_pref("browser.search.suggest.enabled", false);
+user_pref("browser.startup.homepage", "chrome://browser/content/blanktab.html");
+user_pref("browser.uiCustomization.state", "{\"placements\":{\"widget-overflow-fixed-list\":[],\"unified-extensions-area\":[],\"nav-bar\":[\"back-button\",\"forward-button\",\"stop-reload-button\",\"customizableui-special-spring1\",\"vertical-spacer\",\"urlbar-container\",\"customizableui-special-spring2\",\"save-to-pocket-button\",\"downloads-button\",\"fxa-toolbar-menu-button\",\"unified-extensions-button\"],\"toolbar-menubar\":[\"menubar-items\"],\"TabsToolbar\":[\"firefox-view-button\",\"tabbrowser-tabs\",\"new-tab-button\",\"alltabs-button\"],\"vertical-tabs\":[],\"PersonalToolbar\":[\"import-button\",\"personal-bookmarks\"]},\"seen\":[\"save-to-pocket-button\",\"developer-button\"],\"dirtyAreaCache\":[\"nav-bar\",\"vertical-tabs\",\"PersonalToolbar\",\"toolbar-menubar\",\"TabsToolbar\"],\"currentVersion\":21,\"newElementCount\":2}");
+user_pref("browser.urlbar.placeholderName", "DuckDuckGo");
+user_pref("browser.urlbar.placeholderName.private", "DuckDuckGo");
+user_pref("browser.urlbar.shortcuts.bookmarks", false);
+user_pref("browser.urlbar.shortcuts.history", false);
+user_pref("browser.urlbar.shortcuts.tabs", false);
+user_pref("browser.urlbar.suggest.bookmark", false);
+user_pref("browser.urlbar.suggest.engines", false);
+user_pref("browser.urlbar.suggest.history", false);
+user_pref("browser.urlbar.suggest.openpage", false);
+user_pref("browser.urlbar.suggest.quicksuggest.nonsponsored", false);
+user_pref("browser.urlbar.suggest.quicksuggest.sponsored", false);
+user_pref("browser.urlbar.suggest.recentsearches", false);
+user_pref("browser.urlbar.suggest.searches", false);
+user_pref("browser.urlbar.suggest.topsites", false);
+user_pref("dom.private-attribution.submission.enabled", false);
+user_pref("extensions.formautofill.addresses.enabled", false);
+user_pref("extensions.formautofill.creditCards.enabled", false);
+user_pref("extensions.pendingOperations", false);
+user_pref("network.proxy.socks_remote_dns", true);
+user_pref("privacy.clearOnShutdown_v2.historyFormDataAndDownloads", false);
+user_pref("sidebar.backupState", "{\"width\":\"\",\"command\":\"\",\"expanded\":false,\"hidden\":true}");
+user_pref("signon.management.page.breach-alerts.enabled", false);
+user_pref("signon.rememberSignons", false);
+user_pref("browser.theme.content-theme", 0);
+user_pref("browser.theme.toolbar-theme", 0);
+user_pref("extensions.activeThemeID", "firefox-compact-dark@mozilla.org");
+user_pref("browser.toolbars.bookmarks.visibility", "never");
+
+EOF
 
 # launch the new browser with any additional flags from the command line
 firefox -no-remote -profile "${profiledir}" $*
 
-# remove the temporary profile
-rm -rf ${profiledir}
+# remove the profile from profiles.ini
