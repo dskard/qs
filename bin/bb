@@ -2,7 +2,7 @@
 
 # you can also pass in chrome command line options like `--version`
 #
-# ./ch --version
+# ./bb --version
 
 # some hints on command line arguments from
 # https://stackoverflow.com/a/13436874
@@ -10,10 +10,10 @@
 # https://superuser.com/a/377195
 
 # create a temporary directory to hold the profile
-profiledir=$(mktemp -d /tmp/ch.XXXXXXXXX)
+profiledir=$(mktemp -d /tmp/bb.XXXXXXXXX)
 
 # launch the new browser with any additional flags from the command line
-chromium-browser \
+brave-browser \
     --incognito \
     --user-data-dir="${profiledir}" \
     --no-first-run \
